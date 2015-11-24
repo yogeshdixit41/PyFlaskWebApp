@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Project Orange Control Panel</title>
+	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	
+	<link rel="icon" href="static/orange.png" >
+	<link rel="stylesheet" type="text/css" href="static/css/layout.css">
+    <link rel="Stylesheet" type="text/css" href="static/css/tree.css" />
+    <link rel="Stylesheet" type="text/css" href="static/css/fileinput.css" />
+    <link rel="Stylesheet" type="text/css" href="static/css/fileinput.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="jquery-2.1.4.js"></script>
+	
+	<script type="text/javascript" src="static/data/taskData.js"></script>
+	<script type="text/javascript" src="static/data/scheduleData.js"></script>
+	<script type="text/javascript" src="static/data/resourceData.js"></script>
+
+	<script type="text/javascript" src="static/js/fileinput.min.js"></script>
+	<script type="text/javascript" src="static/js/fileinput.js"></script>
+
+	<script type="text/javascript" src="static/js/task.js"></script>
+	<script type="text/javascript" src="static/js/schedule.js"></script>
+	<script type="text/javascript" src="static/js/resource.js"></script>
+	<script type="text/javascript" src="static/js/taskfunc.js"></script>
+	
+</head>
+<body class = "body">
+<span>
+<nav class = "navbar navbar-inverse">
+<div class="container-fluid">
+    <div class="navbar-header">	
+      <a class="navbar-brand" href="https://secret-chamber-7094.herokuapp.com/">ProjectControlPanel</a>
+    </div>
+    <div>
+		<ul class="nav navbar-nav">
+		<li class="dropdown"> 
+        		<a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false">File</a>
+				<ul class = "dropdown-menu">
+					<li><a data-toggle="modal" href="#newProject">New Project</a></li>
+					<li role="separator" class="divider"></li>
+					<li><a href="/projectfile/project.json" download>Export Project</a></li>
+					<li role="separator" class="divider"></li>
+					<li><a data-toggle="modal" href="#importProject">Import Project</a></li>
+					<li role="separator" class="divider"></li>
+					<li><a href="/projectfile/schedule.csv" download>Export Schedule</a></li>
+				</ul>
+		</li>
+		<li class="dropdown">
+        		<a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false">Project</a>
+				<ul class = "dropdown-menu">
+					<li><a data-toggle="modal" href="#addTask">Add Task</a></li>
+					<li role="separator" class="divider"></li>
+					<li><a data-toggle="modal" href="#addResources">Add Resource</a></li>
+					<li role="separator" class="divider"></li>
+					<li><a data-toggle="modal" href="#addDeliverable">Add Deliverables</a></li>
+					<li role="separator" class="divider"></li>
+					<li><a href="#">Generate Schedule</a></li>
+				</ul>
+		</li>
+		<li class="dropdown">
+        		<a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false">Edit</a>
+				<ul class = "dropdown-menu">
+					<li class="disabled"><a data-toggle="modal" href="#addTask" >Edit Task</a></li>
+					<li role="separator" class="divider"></li>
+					<li class="disabled"><a data-toggle="modal" href="#addResources">Edit Resources</a></li>
+					<li role="separator" class="divider"></li>
+					<li><a href="#">Remove</a></li>
+
+				</ul>
+		</li>
+		</ul>
+	</div>
+</div>
+</nav>
+<div id="wrapper">
+	<div id="task">
+		<h1 id="pName">projectName</h1>
+		<div id="tasksTree"></div>
+		<script>
+			$(function() {
+				$("#tasksTree").tree({
+					data: data
+				});
+			});
+		</script>
+	</div>
+	<div id="schedule">	
+		<h1>SCHEDULE</h1>
+		<table class = "table">
+			<tr>
+				<th>Date</th>
+				<th>Task(s)</th>
+			</tr>
+			<tr>
+				<td>11/6/2015</td>
+				<td>Task1,Task2,Task3</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div id="resources">
+	<h1>RESOURCES</h1>
+	<ul>
+
+	</ul>
+</div>
+
+<div id="newProject" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+    <!-- Modal content-->
+        <div class="modal-content">
+      	    <div class="modal-header">
+       	 	    <button type="button" class="close" data-dismiss="modal">&times;</button>
+        	 	<h4 class="modal-title">Create New Project</h4>
+      		</div>
+      		<div class="modal-body" style="padding:40px 50px;">
+        		<form id = "projectForm" role="form" class = "form-horizontal" method="post" onsubmit="return newProject();">
+          	  		<div class="form-group">
+             			<label for="projectName"><span class="glyphicon glyphicon-tasks"></span> Project Name</label>
+              			<input type="text" class="form-control" name="pName" placeholder="Enter name">
+            		</div>
+            		<div class="form-group">
+            			<label for="startDate"><span class="glyphicon glyphicon-th"></span> Start Date</label>
+               			<input type="text" class="form-control" placeholder="mm/dd/yyyy" name="date" />
+            		</div>
+            		<input class="btn btn-primary" name="submitProject" type="submit" value="Create Project">
+            	</form>
+			</div>
+       		<div class="modal-footer">
+         		<div class="pull-right">
+        			<a class="btn btn-danger" data-dismiss="modal" href="#">Cancel</a>
+            	</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addTask" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+    <!-- Modal content-->
+        <div class="modal-content">
+      	    <div class="modal-header">
+       	 	    <button type="button" class="close" data-dismiss="modal">&times;</button>
+        	 	<h4 class="modal-title">Create New Task</h4>
+      		</div>
+      		<div class="modal-body" style="padding:40px 50px;">
+        		<form id = "taskForm" role="form" class = "form-horizontal" method="post" onsubmit="return addTask();">
+          	  		<div class="form-group">
+             			<label for="taskName"><span class="glyphicon glyphicon-tasks"></span> Task Name</label>
+              			<input type="text" class="form-control" name="taskName" placeholder="Enter task name">
+            		</div>
+            		<div class="form-group">
+            			<label for="duration"><span class="glyphicon glyphicon-th"></span> Duration</label>
+               			<input type="text" class="form-control" placeholder="Number of days" name="duration" />
+  						<label class="radio-inline"><input type="radio" name="optTaskType" value="SimpleTask">Simple Task</label>
+ 						<label class="radio-inline"><input type="radio" name="optTaskType" value="CompositeTask">Composite Task</label>
+					</div>
+					<div class="form-group">
+						<div class="col-xs-4">
+							<label for="selPred" class>Predecessor Tasks</label>
+							<select multiple class="form-control" id="selPred"></select>
+						</div>
+      					<div class="col-xs-4">
+	 						<label for="selSucc col-xs-3">Successor Tasks</label>	
+ 							<select multiple class="form-control" id="selSucc"></select>
+ 						</div>
+						<div class="col-xs-4">
+	 						<label for="selRes col-xs-3">Resource Needed</label>
+							<select multiple class="form-control" id="selRes"></select>
+        				</div>
+            		</div>
+					<div class="form-group">
+             			<label for="taskDescription">Descrition:</label>
+              			<textarea class="form-control" name="taskDescription" rows = "3" placeholder="Enter task description"></textarea>
+            		</div>
+            		<input class="btn btn-primary" name="submitTask" type="submit" value="Create Task">
+            	</form>
+			</div>
+       		<div class="modal-footer">
+         		<div class="pull-right">
+        			<a class="btn btn-danger" data-dismiss="modal" href="#">Cancel</a>
+            	</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="importProject" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+    <!-- Modal content-->
+        <div class="modal-content">
+      	    <div class="modal-header">
+       	 	    <button type="button" class="close" data-dismiss="modal">&times;</button>
+        	 	<h4 class="modal-title">Import Project</h4>
+      		</div>
+      		<div class="modal-body" style="padding:40px 50px;">
+        		<form id = "importForm" role="form" class = "form-horizontal" method="post">
+          	  		<div class="form-group">
+          	  			<label for="inputfile">Select File</label>
+						<input id="inputfile" type="file" class="file file-loading" data-allowed-file-extensions='["json"]'>
+            		</div>
+            		<input class="btn btn-primary" name="submitTask" type="submit" value="Done">
+            	</form>
+			</div>
+       		<div class="modal-footer">
+         		<div class="pull-right">
+        			<a class="btn btn-danger" data-dismiss="modal" href="#">Cancel</a>
+            	</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addResources" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+    <!-- Modal content-->
+        <div class="modal-content">
+      	    <div class="modal-header">
+       	 	    <button type="button" class="close" data-dismiss="modal">&times;</button>
+        	 	<h4 class="modal-title">Create New Resource</h4>
+      		</div>
+      		<div class="modal-body" style="padding:40px 50px;">
+        		<form id = "resourceForm" role="form" class = "form-horizontal" method="post" onsubmit="return addResource();">
+          	  		<div class="form-group">
+             			<label for="resourceName"><span class="glyphicon glyphicon-tasks"></span> Resource Name</label>
+              			<input type="text" class="form-control" name="resourceName" placeholder="Enter resource name">
+            		</div>
+            		<div class="form-group">
+            			<label for="dailycost"><span class="glyphicon glyphicon-usd"></span> Daily Cost</label>
+               			<input type="text" class="form-control" placeholder="Amount in dollars" name="dailycost" />
+					</div>
+					<div class="form-group">
+						<label for="resourceType">Resource Type</label>
+						<select class="form-control" id="resourceType">
+							<option>Labor</option>
+							<option>Equipment</option>
+							<option>Material</option>
+						</select>
+            		</div>
+					<div class="form-group">
+						<label for="allocTask">Allocated Tasks</label>
+						<select multiple class="form-control" id="allocTask"></select>
+            		</div>
+            		<input class="btn btn-primary" name="submitTask" type="submit" value="Create Task">
+            	</form>
+			</div>
+       		<div class="modal-footer">
+         		<div class="pull-right">
+        			<a class="btn btn-danger" data-dismiss="modal" href="#">Cancel</a>
+            	</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addDeliverable" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+    <!-- Modal content-->
+        <div class="modal-content">
+      	    <div class="modal-header">
+       	 	    <button type="button" class="close" data-dismiss="modal">&times;</button>
+        	 	<h4 class="modal-title">Add Deliverables</h4>
+      		</div>
+      		<div class="modal-body" style="padding:40px 50px;">
+        		<form id = "deliverableForm" role="form" class = "form-horizontal" method="post" onsubmit="return addDeliverable();" >
+          	  		<div class="form-group">
+             			<label for="deliverableName"><span class="glyphicon glyphicon-tasks"></span> Deliverable Name</label>
+              			<input type="text" class="form-control" name="deliverableName" placeholder="Enter deliverable name">
+            		</div>
+            		<div class="form-group">
+						<label for="deliverableType">Deliverable Type</label>
+						<select class="form-control" id="deliverableType">
+							<option>File</option>
+							<option>Presentation</option>
+						</select>
+            		</div>
+            		<input class="btn btn-primary" name="submitTask" type="submit" value="Add">
+            	</form>
+			</div>
+       		<div class="modal-footer">
+         		<div class="pull-right">
+        			<a class="btn btn-danger" data-dismiss="modal" href="#">Cancel</a>
+            	</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

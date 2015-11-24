@@ -1,0 +1,50 @@
+/*******layout*******/
+html, body{
+	margin:0px;
+	padding:0px;
+	height:100%;
+	width: 100%;
+}
+
+h1{
+	
+}
+
+#wrapper{
+	margin:0 auto;
+	padding-left:20px;
+	height:50%;
+	width:98%;
+
+}
+
+#task {
+	width:50%;
+	float:left;
+}
+
+#schedule {
+	text-align:center;
+	float:right;
+	width: 50%;
+}
+
+ table{
+	margin: 0 auto;
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+th, td {
+	border: 1px solid black;
+	
+}
+
+#resources {
+	display:block;
+	margin: 0px auto;
+	padding-left:20px;
+	height:25%;
+	width:98%;
+	float:bottom;
+
+}

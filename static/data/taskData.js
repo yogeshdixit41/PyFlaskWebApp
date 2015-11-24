@@ -1,0 +1,19 @@
+var data = [
+    {
+        label: 'task1', id: 1,
+        children: [
+            { label: 'subTask1' },
+            { label: 'subTask2',
+			  children: [
+				  {label: 'subSubTask1'}
+				]
+			}
+        ]
+    },
+    {
+        label: 'task2',
+        children: [
+            { label: 'subTask1'}
+        ]
+    }
+];

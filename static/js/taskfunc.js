@@ -43,20 +43,28 @@ New Project method - XMLHttp request mechanism impl
 */
 
 function newProject1() {
-  req.open("GET", "https://secret-chamber-7094.herokuapp.com/naman", true);
+  req.open("GET", "/naman", true);
   req.send();
   //req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   //req.send(form-encoded request body);
   return false;
 }
 
+
+
 /*
 New Project Method
 */
 
+function createProject(){
+  if (!newProject()){
+    $('#newProject').modal('hide');
+  }
+  return false;
+}
+
 function newProject() {
-  //alert("Entered function..");
-    $.getJSON('https://secret-chamber-7094.herokuapp.com/project/newProject', {
+    $.getJSON('/newProject', {
       pname: $('input[name="pName"]').val(),
       date: $('input[name="date"]').val()
       }, function(data) {
@@ -67,13 +75,14 @@ function newProject() {
 }
 
 function addTask() {
-    $.getJSON('https://secret-chamber-7094.herokuapp.com/task/addTask', {
+    $.getJSON('/task/addTask', {
       taskName: $('input[name="taskName"]').val(),
       duration: $('input[name="duration"]').val(),
       optTaskType: $('input[name="optTaskType"]').val(),
-      selPred: $('input[name="selPred"]').val(),
-      selSucc: $('input[name="selSucc"]').val(),
-      selRes: $('input[name="selRes"]').val(),
+      selChild: $('input[id="selChild"]').val(),
+      selPred: $('input[id="selPred"]').val(),
+      selSucc: $('input[id="selSucc"]').val(),
+      selRes: $('input[id="selRes"]').val(),
       taskDescription: $('textarea[name="taskDescription"]').val()
       }, function(data) {
         console.log(data);
@@ -83,7 +92,7 @@ function addTask() {
 }
 
 function addResource() {
-    $.getJSON('https://secret-chamber-7094.herokuapp.com/resource/addResource', {
+    $.getJSON('/resource/addResource', {
       resourceName: $('input[name="resourceName"]').val(),
       dailycost: $('input[name="dailycost"]').val(),
       resourceType: $('select[id="resourceType"]').val(),
@@ -96,7 +105,7 @@ function addResource() {
 }
 
 function addDeliverable() {
-    $.getJSON('https://secret-chamber-7094.herokuapp.com/deliverable/addDeliverable', {
+    $.getJSON('/deliverable/addDeliverable', {
       deliverableName: $('input[name="deliverableName"]').val(),
       deliverableType: $('select[id="deliverableType"]').val(),
       }, function(data) {

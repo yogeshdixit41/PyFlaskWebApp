@@ -27,7 +27,7 @@
 	<script type="text/javascript" src="static/js/task.js"></script>
 	<script type="text/javascript" src="static/js/schedule.js"></script>
 	<script type="text/javascript" src="static/js/resource.js"></script>
-	<script type="text/javascript" src="js/taskfunc.js"></script>
+	<script type="text/javascript" src="static/js/taskfunc.js"></script>
 	
 </head>
 <body class = "body">

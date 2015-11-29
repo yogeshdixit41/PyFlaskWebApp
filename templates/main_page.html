@@ -3,200 +3,161 @@
 <head>
 	<title>Project Orange Control Panel</title>
 	<meta charset="utf-8">
-  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   	
 	<link rel="icon" href="static/orange.png" >
-	<link rel="stylesheet" type="text/css" href="static/css/layout.css">
-    <link rel="Stylesheet" type="text/css" href="static/css/tree.css" />
-    <link rel="Stylesheet" type="text/css" href="static/css/fileinput.css" />
-    <link rel="Stylesheet" type="text/css" href="static/css/fileinput.min.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="Stylesheet" type="text/css" href="static/css/tree.css" />
+  <link rel="Stylesheet" type="text/css" href="static/css/fileinput.css" />
+  <link rel="Stylesheet" type="text/css" href="static/css/fileinput.min.css" />
+  <link rel="Stylesheet" type="text/css" href="static/css/datepicker.css" />
+  <link rel="stylesheet" type="text/css" href="static/css/layout.css">
+
+
 
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script src="jquery-2.1.4.js"></script>
-	
-	<script type="text/javascript" src="static/data/taskData.js"></script>
-	<script type="text/javascript" src="static/data/scheduleData.js"></script>
-	<script type="text/javascript" src="static/data/resourceData.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="static/js/bootstrap-datepicker.js"></script>
 
 	<script type="text/javascript" src="static/js/fileinput.min.js"></script>
 	<script type="text/javascript" src="static/js/fileinput.js"></script>
 
-	<script type="text/javascript" src="static/js/task.js"></script>
-	<script type="text/javascript" src="static/js/schedule.js"></script>
-	<script type="text/javascript" src="static/js/resource.js"></script>
 	<script type="text/javascript" src="static/js/taskfunc.js"></script>
+  <script type="text/javascript" src="static/js/jsonUI.js"></script>
 	
 </head>
 <body class = "body">
-<span>
-<nav class = "navbar navbar-inverse">
-<div class="container-fluid">
-    <div class="navbar-header">	
-      <a class="navbar-brand" href="https://secret-chamber-7094.herokuapp.com/">ProjectControlPanel</a>
+<!--Navigation Bar-->
+  <nav class = "navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">	
+        <a class="navbar-brand" href="/">ProjectControlPanel</a>
+      </div>
+      <div>
+    		<ul class="nav navbar-nav">
+      		<li class="dropdown"> 
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false">File</a>
+      			<ul class = "dropdown-menu">
+      				<li><a data-toggle="modal" href="#newProject">New Project</a></li>
+      				<li role="separator" class="divider"></li>
+      				<li><a href="/projectfile/project.json" download>Export Project</a></li>
+      				<li role="separator" class="divider"></li>
+      				<li><a data-toggle="modal" href="#importProject">Import Project</a></li>
+      				<li role="separator" class="divider"></li>
+      				<li><a href="/projectfile/schedule.csv" download>Export Schedule</a></li>
+      			</ul>
+      		</li>
+    		  <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false">Project</a>
+    				<ul class = "dropdown-menu">
+    					<li><a data-toggle="modal" href="#addTask">Add Task</a></li>
+    					<li role="separator" class="divider"></li>
+    					<li><a data-toggle="modal" href="#addResources">Add Resource</a></li>
+    					<li role="separator" class="divider"></li>
+    					<li><a data-toggle="modal" href="#addDeliverable">Add Deliverables</a></li>
+    					<li role="separator" class="divider"></li>
+    					<li><a href="#">Generate Schedule</a></li>
+    				</ul>
+    		  </li>
+    		  <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false">Edit</a>
+    				<ul class = "dropdown-menu">
+    					<li class="disabled"><a data-toggle="modal" href="#addTask" >Edit Task</a></li>
+    					<li role="separator" class="divider"></li>
+    					<li class="disabled"><a data-toggle="modal" href="#addResources">Edit Resources</a></li>
+    					<li role="separator" class="divider"></li>
+    					<li><a href="#">Remove</a></li>
+    				</ul>
+    		  </li>
+    		</ul>
+  	  </div>
     </div>
-    <div>
-		<ul class="nav navbar-nav">
-		<li class="dropdown"> 
-        		<a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false">File</a>
-				<ul class = "dropdown-menu">
-					<li><a data-toggle="modal" href="#newProject">New Project</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a href="/projectfile/project.json" download>Export Project</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a data-toggle="modal" href="#importProject">Import Project</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a href="/projectfile/schedule.csv" download>Export Schedule</a></li>
-				</ul>
-		</li>
-		<li class="dropdown">
-        		<a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false">Project</a>
-				<ul class = "dropdown-menu">
-					<li><a data-toggle="modal" href="#addTask">Add Task</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a data-toggle="modal" href="#addResources">Add Resource</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a data-toggle="modal" href="#addDeliverable">Add Deliverables</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a href="#">Generate Schedule</a></li>
-				</ul>
-		</li>
-		<li class="dropdown">
-        		<a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false">Edit</a>
-				<ul class = "dropdown-menu">
-					<li class="disabled"><a data-toggle="modal" href="#addTask" >Edit Task</a></li>
-					<li role="separator" class="divider"></li>
-					<li class="disabled"><a data-toggle="modal" href="#addResources">Edit Resources</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a href="#">Remove</a></li>
+  </nav>
 
-				</ul>
-		</li>
-		</ul>
-	</div>
-</div>
-</nav>
-<div id="wrapper">
-	<div id="task">
-		<h1 id="pName">projectName</h1>
-		<div id="tasksTree"></div>
-		<script>
-			$(function() {
-				$("#tasksTree").tree({
-					data: data
-				});
-			});
-		</script>
-	</div>
-	<div id="schedule">	
-		<h1>SCHEDULE</h1>
-		<table class = "table">
-			<tr>
-				<th>Date</th>
-				<th>Task(s)</th>
-			</tr>
-			<tr>
-				<td>11/6/2015</td>
-				<td>Task1,Task2,Task3</td>
-			</tr>
-		</table>
-	</div>
-</div>
-<div id="resources">
-	<h1>RESOURCES</h1>
-	<ul>
-
-	</ul>
-</div>
-
-<div id="newProject" class="modal fade" role="dialog">
+<!-- Modal New Project-->
+  <div id="newProject" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-
-    <!-- Modal content-->
-        <div class="modal-content">
-      	    <div class="modal-header">
-       	 	    <button type="button" class="close" data-dismiss="modal">&times;</button>
-        	 	<h4 class="modal-title">Create New Project</h4>
-      		</div>
-      		<div class="modal-body" style="padding:40px 50px;">
-        		<form id = "projectForm" role="form" class = "form-horizontal" method="post" onsubmit="return newProject();">
-          	  		<div class="form-group">
-             			<label for="projectName"><span class="glyphicon glyphicon-tasks"></span> Project Name</label>
-              			<input type="text" class="form-control" name="pName" placeholder="Enter name">
-            		</div>
-            		<div class="form-group">
-            			<label for="startDate"><span class="glyphicon glyphicon-th"></span> Start Date</label>
-               			<input type="text" class="form-control" placeholder="mm/dd/yyyy" name="date" />
-            		</div>
-            		<input class="btn btn-primary" name="submitProject" type="submit" value="Create Project">
-            	</form>
-			</div>
-       		<div class="modal-footer">
-         		<div class="pull-right">
-        			<a class="btn btn-danger" data-dismiss="modal" href="#">Cancel</a>
-            	</div>
-            </div>
+      <div class="modal-content">
+        	<div class="modal-header">
+         	 	<button type="button" class="close" data-dismiss="modal">&times;</button>
+          	<h4 class="modal-title">Create New Project</h4>
+        	</div>
+        	<div class="modal-body" style="padding:40px 50px;">
+          	<form id = "projectForm" role="form" class ="form-horizontal" data-toggle = "validator" method="post" onsubmit="return createProject();">
+        	  	<div class="form-group has-feadback">
+           			<label for="projectName"><span class="glyphicon glyphicon-tasks"></span> Project Name</label>
+            		<input type="text" class="form-control" name="pName" placeholder="Enter name" required>
+          		</div>
+          		<div class="form-group has-feadback">
+          			<label for="startDate"><span class="glyphicon glyphicon-th"></span> Start Date</label>
+             		<input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" name="date" readonly="readonly" required/>
+              </div>
+          		<input class="btn btn-primary" name="submitProject" type="submit" value="Create Project">
+          	</form>
+  			</div>
+     		<div class="modal-footer">
+       		<div class="pull-right">
+      			<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button> 
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<div id="addTask" class="modal fade" role="dialog">
+<!--Modal Add/Edit Task-->
+  <div id="addTask" class="modal fade" role="dialog">
     <div class="modal-dialog">
-
-    <!-- Modal content-->
-        <div class="modal-content">
-      	    <div class="modal-header">
-       	 	    <button type="button" class="close" data-dismiss="modal">&times;</button>
-        	 	<h4 class="modal-title">Create New Task</h4>
-      		</div>
-      		<div class="modal-body" style="padding:40px 50px;">
-        		<form id = "taskForm" role="form" class = "form-horizontal" method="post" onsubmit="return addTask();">
-          	  		<div class="form-group">
-             			<label for="taskName"><span class="glyphicon glyphicon-tasks"></span> Task Name</label>
-              			<input type="text" class="form-control" name="taskName" placeholder="Enter task name">
-            		</div>
-            		<div class="form-group">
-            			<label for="duration"><span class="glyphicon glyphicon-th"></span> Duration</label>
-               			<input type="text" class="form-control" placeholder="Number of days" name="duration" />
-  						<label class="radio-inline"><input type="radio" name="optTaskType" value="SimpleTask">Simple Task</label>
- 						<label class="radio-inline"><input type="radio" name="optTaskType" value="CompositeTask">Composite Task</label>
-					</div>
-					<div class="form-group">
-						<div class="col-xs-4">
-							<label for="selPred" class>Predecessor Tasks</label>
-							<select multiple class="form-control" id="selPred"></select>
-						</div>
-      					<div class="col-xs-4">
-	 						<label for="selSucc col-xs-3">Successor Tasks</label>	
- 							<select multiple class="form-control" id="selSucc"></select>
- 						</div>
-						<div class="col-xs-4">
-	 						<label for="selRes col-xs-3">Resource Needed</label>
-							<select multiple class="form-control" id="selRes"></select>
-        				</div>
-            		</div>
-					<div class="form-group">
-             			<label for="taskDescription">Descrition:</label>
-              			<textarea class="form-control" name="taskDescription" rows = "3" placeholder="Enter task description"></textarea>
-            		</div>
-            		<input class="btn btn-primary" name="submitTask" type="submit" value="Create Task">
-            	</form>
-			</div>
-       		<div class="modal-footer">
-         		<div class="pull-right">
-        			<a class="btn btn-danger" data-dismiss="modal" href="#">Cancel</a>
-            	</div>
-            </div>
+      <div class="modal-content">
+  	    <div class="modal-header">
+   	 	    <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Create/Edit Task</h4>
         </div>
+      	<div class="modal-body" style="padding:40px 50px;">
+        	<form id = "taskForm" role="form" class = "form-horizontal" method="post" onsubmit="return addTask();">
+          	<div class="form-group">
+         			<label for="taskName"><span class="glyphicon glyphicon-tasks"></span> Task Name</label>
+              <input type="text" class="form-control" name="taskName" placeholder="Enter task name" required>
+            </div>
+            <div class="form-group">
+            	<label for="duration"><span class="glyphicon glyphicon-th"></span> Duration</label>
+            	<input type="number" class="form-control" placeholder="Number of days" name="duration" title="Only numbers are allowed" required/>
+  						<label class="radio-inline"><input type="radio" name="optTaskType" id="st" value="SimpleTask">Simple Task</label>
+  						<label class="radio-inline"><input type="radio" name="optTaskType" id ="ct" value="CompositeTask">Composite Task</label>
+              <select multiple class="form-control" name ="task_list_1" id="selChild" disabled="disabled"></select>
+  				  </div>
+  				  <div class="form-group">
+              <div class="col-xs-4">
+  						  <label for="selPred" class>Predecessor Tasks</label>
+  						  <select multiple class="form-control" name ="task_list_2" id="selPred"></select>
+              </div>
+      				<div class="col-xs-4">
+   					    <label for="selSucc col-xs-3">Successor Tasks</label>	
+  							<select multiple class="form-control" name ="task_list_3" id="selSucc"></select>
+  						</div>
+  				    <div class="col-xs-4">
+   					    <label for="selRes col-xs-3">Resource Needed</label>
+  						  <select multiple class="form-control" id="selRes"></select>
+        			</div>
+            </div>
+  				  <div class="form-group">
+            	<label for="taskDescription">Descrition:</label>
+            	<textarea class="form-control" name="taskDescription" rows = "3" placeholder="Enter task description"></textarea>
+            </div>
+            <input class="btn btn-primary" name="submitTask" type="submit" value="Create Task">
+          </form>
+  		  </div>
+       	<div class="modal-footer">
+        	<div class="pull-right">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<div id="importProject" class="modal fade" role="dialog">
+  <div id="importProject" class="modal fade" role="dialog">
     <div class="modal-dialog">
-
-    <!-- Modal content-->
         <div class="modal-content">
       	    <div class="modal-header">
        	 	    <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -213,7 +174,7 @@
 			</div>
        		<div class="modal-footer">
          		<div class="pull-right">
-        			<a class="btn btn-danger" data-dismiss="modal" href="#">Cancel</a>
+        			<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
             	</div>
             </div>
         </div>
@@ -233,11 +194,11 @@
         		<form id = "resourceForm" role="form" class = "form-horizontal" method="post" onsubmit="return addResource();">
           	  		<div class="form-group">
              			<label for="resourceName"><span class="glyphicon glyphicon-tasks"></span> Resource Name</label>
-              			<input type="text" class="form-control" name="resourceName" placeholder="Enter resource name">
+              			<input type="text" class="form-control" name="resourceName" placeholder="Enter resource name" required>
             		</div>
             		<div class="form-group">
             			<label for="dailycost"><span class="glyphicon glyphicon-usd"></span> Daily Cost</label>
-               			<input type="text" class="form-control" placeholder="Amount in dollars" name="dailycost" />
+               			<input type="text" class="form-control" placeholder="Amount in dollars" pattern="^\d*(\.\d{2}$)?" name="dailycost" title="CDA Currency Format - no dollar sign and no comma(s) - cents (.##) are optional" required/>
 					</div>
 					<div class="form-group">
 						<label for="resourceType">Resource Type</label>
@@ -256,7 +217,7 @@
 			</div>
        		<div class="modal-footer">
          		<div class="pull-right">
-        			<a class="btn btn-danger" data-dismiss="modal" href="#">Cancel</a>
+        			<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
             	</div>
             </div>
         </div>
@@ -276,7 +237,7 @@
         		<form id = "deliverableForm" role="form" class = "form-horizontal" method="post" onsubmit="return addDeliverable();" >
           	  		<div class="form-group">
              			<label for="deliverableName"><span class="glyphicon glyphicon-tasks"></span> Deliverable Name</label>
-              			<input type="text" class="form-control" name="deliverableName" placeholder="Enter deliverable name">
+              			<input type="text" class="form-control" name="deliverableName" placeholder="Enter deliverable name" required>
             		</div>
             		<div class="form-group">
 						<label for="deliverableType">Deliverable Type</label>
@@ -290,13 +251,40 @@
 			</div>
        		<div class="modal-footer">
          		<div class="pull-right">
-        			<a class="btn btn-danger" data-dismiss="modal" href="#">Cancel</a>
+        			<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
             	</div>
             </div>
         </div>
     </div>
 </div>
 
+<div>
+  <h1 id="projectName">Project: </h1>
+  <div id="wrapper">
+    <div id="tasks">
+      <h2>Task</h2>
+    </div>  
+    <div id="schedule"> 
+      <h2>Schedule</h2>
+      <table>
+        <thead>
+          <th>Date</th>
+          <th>Task(s)</th>
+        </thead>
+        <tbody>
 
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div id="resources">
+    <h2>Resources</h2>
+    <ul class="inline">
+      <li><b>Resource</b></li>
+      <li><b>Price</b></li>
+    </ul>
+    <span id="resource" class="inline"></span>
+  </div>
+</div>
 </body>
 </html>

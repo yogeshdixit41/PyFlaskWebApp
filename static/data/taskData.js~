@@ -15,5 +15,11 @@ var data = [
         children: [
             { label: 'subTask1'}
         ]
+    },
+	{
+        label: 'task3',
+        children: [
+            { label: 'subTask1'}
+        ]
     }
 ];

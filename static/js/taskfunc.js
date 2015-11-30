@@ -64,11 +64,7 @@ function createProject(){
 }
 
 function newProject() {
-<<<<<<< HEAD
     $.getJSON('/project/newProject', {
-=======
-    $.getJSON('/newProject', {
->>>>>>> 9c3fda21d46de340bec3860c7ebd12809cc7709a
       pname: $('input[name="pName"]').val(),
       date: $('input[name="date"]').val()
       }, function(data) {

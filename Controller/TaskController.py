@@ -4,34 +4,31 @@ from EntityModel.Deliverable import Deliverable
 from flask import Flask, jsonify, request
 import main_func
 import json
+import os.path
+import sys
 
-def createTask(json_request):
-	name = json_request['name']
-	desc = json_request['desc']
-	date = json_request['date']
-	duration = json_request['duration']
-	type = json_request['type']
-	parentId = json_request['parentId']
-	pred = json_request['pred']
-	succ = json_request['succ']
-	resources = json_request['resources']
-	deliverables = json_request['deliverables']
-	
+def createTask(name, duration, tsktype, children, pred, succ, resources, desc, parentId, deliverables):
 	
 
-	if(type == "simple"):
-	    newTask = SimpleTask(main_func.getId(), name, desc, date, duration, pred, succ, resources,deliverables)
+	if(tsktype == "SimpleTask"):
+	    newTask = SimpleTask(main_func.getId(), name, desc, None, duration, pred, succ, resources, deliverables)
 	else:
-	    startTask = json_request['startTask']
-	    finalTasks = json_request['finalTasks']
-	    newTask = CompositeTask(main_func.getId(), name, desc, date, duration, startTask, finalTasks, pred, succ, [], resources, deliverables)
+	    startTask = None
+	    finalTasks = []
+	    newTask = CompositeTask(main_func.getId(), name, desc, None, duration, startTask, finalTasks, pred, succ, [], resources, deliverables)
 	
 	if(parentId in main_func.project_objects):
 	    parentTask = main_func.project_objects[parentId]
 	    parentTask.addChildTask(newTask)
-	
-    
-	main_func.project_objects[newTask.id] = newTask
-	
+
 	newTask_json = main_func.jdefault(newTask)
-	return json.dumps(newTask_json, default=main_func.jdefault, indent = 2)
+	project_json = None
+ 	with open(os.path.join(sys.path[0]+'/static/data', 'Project.json'), 'r') as inFile:
+		project_json = json.load(inFile);
+		project_json['children'].append(newTask_json);
+
+	with open(os.path.join(sys.path[0]+'/static/data', 'Project.json'), 'w') as outFile:
+		json.dump(project_json, outFile)
+
+	#main_func.project_objects[newTask.id] = newTask	
+	return json.dumps(project_json, default=main_func.jdefault, indent = 2)

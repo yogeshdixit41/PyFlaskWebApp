@@ -21,7 +21,7 @@ def createProject(name, date):
 	    #json.dump(main_func.project_objects, f, default=main_func.jdefault, indent = 2)
 	
 	project_json = main_func.jdefault(project)
-	with open(os.path.join(sys.path[0]+'/static/js', name+'.json'), 'w') as outFile:
+	with open(os.path.join(sys.path[0]+'/static/data', 'Project.json'), 'w') as outFile:
 		json.dump(project_json, outFile)
 	return json.dumps(project_json, indent = 2)
 	

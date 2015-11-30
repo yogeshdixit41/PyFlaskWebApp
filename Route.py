@@ -39,7 +39,17 @@ def createDeliverable():
 
 @app.route('/task/addTask')
 def createTask():
-    return Controller.TaskController.createTask(request.json)
+	name = request.args.get('taskName')
+	duration = request.args.get('duration')
+	tsktype = request.args.get('optTaskType')
+	children = request.args.get('selChild')
+	pred = request.args.get('selPred')
+	succ = request.args.get('selSucc')
+	resources = request.args.get('selRes')
+	desc = request.args.get('taskDescription')
+	parentId = request.args.get('parentId')
+	deliverables = request.args.get('deliverables')
+	return Controller.TaskController.createTask(name, duration, tsktype, children, pred, succ, resources, desc, parentId, deliverables)
 	#tname = request.args.get('taskName')
 	#tduration = request.args.get('duration')
 	#ttype = request.args.get('optTaskType')

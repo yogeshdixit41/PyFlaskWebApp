@@ -1,7 +1,7 @@
 from Task import Task
 class SimpleTask(Task):
     
-    def __init__(self, id, name, desc, date, duration, startTask, finalTasks, pred, succ, resources, deliverables):
+    def __init__(self, id, name, desc, date, duration,  pred, succ, resources, deliverables):
     	Task.__init__(self, id, name, desc, date, duration, pred, succ, resources, deliverables)
         pass 
         

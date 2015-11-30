@@ -22,36 +22,6 @@ function createRequest() {
 }
 
 
-/* XMLHttp request callback mechanism - Not used
-// Create the callback:
-var req = createRequest(); // defined above
-req.onreadystatechange = function() {
-  if (req.readyState != 4) return; // Not there yet
-  if (req.status != 200) {
-    // Handle request failure here...
-    return;
-  }
-  // Request successful, read the response
-  var resp = req.responseText;
-  alert(resp);
-  // ... and use it as needed by your app.
-}
-*/
-
-/*
-New Project method - XMLHttp request mechanism impl
-*/
-
-function newProject1() {
-  req.open("GET", "/naman", true);
-  req.send();
-  //req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  //req.send(form-encoded request body);
-  return false;
-}
-
-
-
 /*
 New Project Method
 */
@@ -63,12 +33,24 @@ function createProject(){
   return false;
 }
 
+
+function createTask(){
+  if (!addTask()){
+    $('#addTask').modal('hide');
+  }
+  return false;
+}
+
+
 function newProject() {
     $.getJSON('/project/newProject', {
       pname: $('input[name="pName"]').val(),
       date: $('input[name="date"]').val()
       }, function(data) {
-        $('input[name="pName"]').
+        $('input[name="pName"]').val('')
+        $('input[name="date"]').val('')
+        $('div[name ="projectFrame"]').removeAttr("class")
+        $("#projectName").append(data.name);
         console.log(data);
         //alert(data);
         });
@@ -79,7 +61,7 @@ function addTask() {
     $.getJSON('/task/addTask', {
       taskName: $('input[name="taskName"]').val(),
       duration: $('input[name="duration"]').val(),
-      optTaskType: $('input[name="optTaskType"]').val(),
+      optTaskType: $('input[name="optTaskType"]:checked').val(),
       selChild: $('input[id="selChild"]').val(),
       selPred: $('input[id="selPred"]').val(),
       selSucc: $('input[id="selSucc"]').val(),
@@ -114,5 +96,32 @@ function addDeliverable() {
         //alert(data);
         });
     return false;
+}
+
+
+$(function(){
+  $('.datepicker').datepicker({
+    format: 'mm-dd-yyyy'
+  });
+  $('#date').datepicker().on('changeDate', function(ev){
+    $('#date').val(ev.target.value);
+    });
+});
+
+$('[data-dismiss=modal]').on('click', function (e) {
+  var $t = $(this),
+  target = $t[0].href || $t.data("target") || $t.parents('.modal') || [];
+  clearform(target)
+  
+})
+
+function clearform(target){
+$(target)
+  .find("input[type=text],textarea,select")
+    .val('')
+    .end()
+  .find("input[type=checkbox], input[type=radio]")
+  .prop("checked", "")
+  .end();
 }
 

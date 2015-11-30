@@ -2,10 +2,16 @@ from abc import ABCMeta, abstractmethod
 class Task(object):
     __metaclass__ = ABCMeta
 
+<<<<<<< HEAD
     def __init__(self, id, name, desc, date, duration, pred, succ, resources, deliverables):
     	self.id = id
         self.name = name
         self.desc = desc
+=======
+    def __init__(self, id, name, date, duration, pred, succ, resources, deliverables):
+    	self.id = id
+        self.name = name
+>>>>>>> 9c3fda21d46de340bec3860c7ebd12809cc7709a
         self.date = date
         self.duration = duration
         self.pred = pred

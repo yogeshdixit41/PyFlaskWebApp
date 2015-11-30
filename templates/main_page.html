@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<<<<<<< HEAD
 	<title>Project Orange Control Panel</title>
 	<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,6 +26,27 @@
 
 	<script type="text/javascript" src="static/js/taskfunc.js"></script>
   <script type="text/javascript" src="static/js/jsonUI.js"></script>
+=======
+  <title>Project Orange Control Panel</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  	
+  <link rel="icon" href="static/orange.png" >
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/layout.css">
+  <link rel="Stylesheet" type="text/css" href="static/css/fileinput.css" />
+  <link rel="Stylesheet" type="text/css" href="static/css/fileinput.min.css" />
+  <link rel="Stylesheet" type="text/css" href="static/css/datepicker.css" />
+	
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="static/js/bootstrap-datepicker.js"></script> 
+  <script type="text/javascript" src="static/js/fileinput.min.js"></script>
+  <script type="text/javascript" src="static/js/fileinput.js"></script>
+
+  <script type="text/javascript" src="static/js/jsonUI.js"></script>
+  <script type="text/javascript" src="static/js/taskfunc.js"></script>
+>>>>>>> 9c3fda21d46de340bec3860c7ebd12809cc7709a
 	
 </head>
 <body class = "body">
@@ -91,9 +113,25 @@
           		</div>
           		<div class="form-group has-feadback">
           			<label for="startDate"><span class="glyphicon glyphicon-th"></span> Start Date</label>
+<<<<<<< HEAD
              		<input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" name="date" readonly="readonly" required/>
               </div>
           		<input class="btn btn-primary" name="submitProject" type="submit" value="Create Project">
+=======
+             		<input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" name="date" required/>
+              </div>
+          		<input class="btn btn-primary" name="submitProject" type="submit" value="Create Project">
+              <script>
+                $(function(){
+                  $('.datepicker').datepicker({
+                    format: 'mm-dd-yyyy'
+                  });
+                  $('#date').datepicker().on('changeDate', function(ev){
+                    $('#date').val(ev.target.value);
+                    });
+                });
+              </script>
+>>>>>>> 9c3fda21d46de340bec3860c7ebd12809cc7709a
           	</form>
   			</div>
      		<div class="modal-footer">
@@ -145,6 +183,30 @@
             	<textarea class="form-control" name="taskDescription" rows = "3" placeholder="Enter task description"></textarea>
             </div>
             <input class="btn btn-primary" name="submitTask" type="submit" value="Create Task">
+<<<<<<< HEAD
+=======
+            <script>
+              $('#ct').click(function()
+              {
+                $('#selChild').removeAttr("disabled");
+              });
+              $('#st').click(function()
+              {
+                $('#selChild').attr("disabled","disabled");
+              });
+
+              $('select[name*="task_list"]').change(function(){
+                $('select[name*="task_list"] option').attr('disabled',false);
+                $('select[name*="task_list"]').each(function(){
+                    var $this = $(this);
+                    $('select[name*="task_list"]').not($this).find('option').each(function(){
+                       if($.inArray($(this).attr('value'),$this.val())>-1)
+                           $(this).attr('disabled',true);
+                    });
+                  });
+              });
+            </script>
+>>>>>>> 9c3fda21d46de340bec3860c7ebd12809cc7709a
           </form>
   		  </div>
        	<div class="modal-footer">
@@ -257,7 +319,40 @@
         </div>
     </div>
 </div>
+<script>
 
+$('[data-dismiss=modal]').on('click', function (e) {
+  var $t = $(this),
+  target = $t[0].href || $t.data("target") || $t.parents('.modal') || [];
+
+  $(target)
+  .find("input[type=text],textarea,select")
+    .val('')
+    .end()
+  .find("input[type=checkbox], input[type=radio]")
+  .prop("checked", "")
+  .end();
+
+})
+
+</script>
+
+
+<h1 id="pName">Project: </h1>
+<div id="wrapper">
+	<div id="task">
+		<h2>Task</h2>
+	</div>	
+	<div id="schedule">	
+		<h2>Schedule</h2>
+		<table>
+			<thead>
+				<th>Date</th>
+				<th>Task(s)</th>
+			</thead>
+			<tbody>
+
+<<<<<<< HEAD
 <div>
   <h1 id="projectName">Project: </h1>
   <div id="wrapper">
@@ -272,6 +367,20 @@
           <th>Task(s)</th>
         </thead>
         <tbody>
+=======
+			</tbody>
+		</table>
+	</div>
+</div>
+<div id="resources">
+	<h2>Resources</h2>
+	<ul class="inline">
+	  <li><b>Resource</b></li>
+	  <li><b>Price</b></li>
+	</ul>
+	<span id="resource" class="inline"></span>
+</div>
+>>>>>>> 9c3fda21d46de340bec3860c7ebd12809cc7709a
 
         </tbody>
       </table>

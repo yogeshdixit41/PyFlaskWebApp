@@ -33,13 +33,13 @@ function createProject(){
   return false;
 }
 
-/*
+
 function createTask(){
   if (!addTask()){
     $('#addTask').modal('hide');
   }
-
-}*/
+  return false;
+}
 
 
 function newProject() {
@@ -79,7 +79,7 @@ function addResource() {
       resourceName: $('input[name="resourceName"]').val(),
       dailycost: $('input[name="dailycost"]').val(),
       resourceType: $('select[id="resourceType"]').val(),
-      allocTask: $('input[name="allocTask"]').val()
+      allocTask: $('select[name="allocTask"]').val()
       }, function(data) {
         console.log(data);
         //alert(data);

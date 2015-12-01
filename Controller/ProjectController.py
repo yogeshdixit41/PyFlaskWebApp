@@ -30,14 +30,18 @@ def createProject(name, date):
     
 def createDeliverable(name, type, pId):
 
-    deliverable = Deliverable(main_func.getId(), name, type)
+	deliverable = Deliverable(main_func.getId(), name, type)
 	#parseJSON and get taskObject against the pId
-    taskObject = main_func.project_objects[pId]
-    taskObject.addDeliverable(deliverable)
-    main_func.project_objects[deliverable.id] = deliverable
-    
-    deliverable_json = main_func.jdefault(deliverable)
-    return json.dumps(deliverable_json, default=main_func.jdefault, indent = 2)
+	deliverable_json = main_func.jdefault(deliverable)
+	project_json = None
+	with open(os.path.join(sys.path[0]+'/static/data', 'Project.json'), 'r') as inFile:
+		project_json = json.load(inFile);
+		project_json['deliverables'].append(deliverable_json);
+
+	with open(os.path.join(sys.path[0]+'/static/data', 'Project.json'), 'w') as outFile:
+		json.dump(project_json, outFile)
+  
+	return json.dumps(project_json, default=main_func.jdefault, indent = 2)
     
     
 def saveProject(projectId):

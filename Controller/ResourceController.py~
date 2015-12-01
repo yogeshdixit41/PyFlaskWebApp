@@ -19,7 +19,7 @@ def addResource(rname,rdailycost,rtype,rallocatedtasks):
     project_json['resources'].append(resource_json)
     taskList = project_json['children']
 
-    if rallocatedtasks is not None:
+    if rallocatedtasks != Null:
     	associateResource(taskList,resource,rallocatedtasks)
     project_json['children'] = taskList
 

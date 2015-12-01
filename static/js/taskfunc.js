@@ -41,6 +41,13 @@ function createTask(){
   return false;
 }
 
+function createResource(){
+  if (!addResource()){
+    $('#addResources').modal('hide');
+  }
+  return false;
+}
+
 
 function newProject() {
     $.getJSON('/project/newProject', {
@@ -79,7 +86,7 @@ function addResource() {
       resourceName: $('input[name="resourceName"]').val(),
       dailycost: $('input[name="dailycost"]').val(),
       resourceType: $('select[id="resourceType"]').val(),
-      allocTask: $('input[name="allocTask"]').val()
+      allocTask: $('select[name="allocTask"]').val()
       }, function(data) {
         console.log(data);
         //alert(data);

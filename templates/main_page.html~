@@ -113,7 +113,7 @@
           <h4 class="modal-title">Create/Edit Task</h4>
         </div>
       	<div class="modal-body" style="padding:40px 50px;">
-        	<form id = "taskForm" role="form" class = "form-horizontal" method="post" onsubmit="return addTask();">
+        	<form id = "taskForm" role="form" class = "form-horizontal" method="post" onsubmit="return createTask();">
           	<div class="form-group">
          			<label for="taskName"><span class="glyphicon glyphicon-tasks"></span> Task Name</label>
               <input type="text" class="form-control" name="taskName" placeholder="Enter task name" required>

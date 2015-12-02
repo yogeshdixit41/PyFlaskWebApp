@@ -48,6 +48,13 @@ function createResource(){
   return false;
 }
 
+function createDeliverable(){
+  if (!addDeliverable()){
+    $('#addDeliverable').modal('hide');
+  }
+  return false;
+}
+
 
 function newProject() {
     $.getJSON('/project/newProject', {

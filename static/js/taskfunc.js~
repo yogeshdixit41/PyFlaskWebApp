@@ -100,8 +100,7 @@ function addDeliverable() {
       deliverableName: $('input[name="deliverableName"]').val(),
       deliverableType: $('select[id="deliverableType"]').val(),
       }, function(data) {
-        console.log(data);
-        //alert(data);
+        location.reload();
         });
     return false;
 }

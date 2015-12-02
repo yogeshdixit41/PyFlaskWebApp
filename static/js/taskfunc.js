@@ -54,13 +54,8 @@ function newProject() {
       pname: $('input[name="pName"]').val(),
       date: $('input[name="date"]').val()
       }, function(data) {
-        $('input[name="pName"]').val('')
-        $('input[name="date"]').val('')
-        $('div[name ="projectFrame"]').removeAttr("class")
-        $("#projectName").append(data.name);
-        console.log(data);
-        //alert(data);
-        });
+        location.reload();  
+      });
     return false;
 }
 
@@ -69,17 +64,20 @@ function addTask() {
       taskName: $('input[name="taskName"]').val(),
       duration: $('input[name="duration"]').val(),
       optTaskType: $('input[name="optTaskType"]:checked').val(),
-      selChild: $('input[id="selChild"]').val(),
-      selPred: $('input[id="selPred"]').val(),
-      selSucc: $('input[id="selSucc"]').val(),
-      selRes: $('input[id="selRes"]').val(),
+      selChild: $('input[id="selChild"] option:selected').val(),
+      selPred: $('input[id="selPred"] option:selected').val(),
+      selSucc: $('input[id="selSucc"] option:selected').val(),
+      selRes: $('input[id="selRes"] option:selected').val(),
       taskDescription: $('textarea[name="taskDescription"]').val()
       }, function(data) {
-        console.log(data);
+        location.reload();  
+        console.log(data.children)
+       
         //alert(data);
         });
     return false;
 }
+
 
 function addResource() {
     $.getJSON('/resource/addResource', {
@@ -88,19 +86,21 @@ function addResource() {
       resourceType: $('select[id="resourceType"]').val(),
       allocTask: $('select[name="allocTask"]').val()
       }, function(data) {
+        location.reload();          
+
         console.log(data);
         //alert(data);
         });
     return false;
 }
 
+
 function addDeliverable() {
     $.getJSON('/deliverable/addDeliverable', {
       deliverableName: $('input[name="deliverableName"]').val(),
       deliverableType: $('select[id="deliverableType"]').val(),
       }, function(data) {
-        console.log(data);
-        //alert(data);
+        location.reload();
         });
     return false;
 }
@@ -115,12 +115,6 @@ $(function(){
     });
 });
 
-$('[data-dismiss=modal]').on('click', function (e) {
-  var $t = $(this),
-  target = $t[0].href || $t.data("target") || $t.parents('.modal') || [];
-  clearform(target)
-  
-})
 
 function clearform(target){
 $(target)

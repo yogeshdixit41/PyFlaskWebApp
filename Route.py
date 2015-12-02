@@ -51,6 +51,18 @@ def createTask():
 	deliverables = request.args.getlist('deliverables')
 	return Controller.TaskController.createTask(name, duration, tsktype, children, pred, succ, resources, desc, parentId, deliverables)
 
+@app.route('/resource/editResource')
+def editResource():
+	rid = request.args.get('resourceId')
+	rname = request.args.get('resourceName')
+	rdailycost = request.args.get('dailycost')
+	rtype = request.args.get('resourceType')
+	allocatedTasks = request.args.get('allocTask')
+	if allocatedTasks is not None :
+		allocatedTasks = request.args.get('allocTask').split(',')
+	return Controller.ResourceController.editResource(rid,rname,rdailycost,rtype,allocatedTasks)
+
+
 if __name__ == '__main__':
     app.debug=True
     app.run()

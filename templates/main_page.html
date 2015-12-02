@@ -7,13 +7,13 @@
   	
 	<link rel="icon" href="static/orange.png" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="Stylesheet" type="text/css" href="static/css/tree.css" />
   <link rel="Stylesheet" type="text/css" href="static/css/fileinput.css" />
   <link rel="Stylesheet" type="text/css" href="static/css/fileinput.min.css" />
   <link rel="Stylesheet" type="text/css" href="static/css/datepicker.css" />
   <link rel="stylesheet" type="text/css" href="static/css/layout.css">
 
-
+  <link href='static/css/fullcalendar.css' rel='stylesheet' />
+  <link href='static/css/fullcalendar.print.css' rel='stylesheet' media='print' />
 
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -23,7 +23,10 @@
 	<script type="text/javascript" src="static/js/fileinput.min.js"></script>
 	<script type="text/javascript" src="static/js/fileinput.js"></script>
 
-	<script type="text/javascript" src="static/js/taskfunc.js"></script>
+  <script type="text/javascript" src='static/js/moment.min.js'></script>
+  <script type="text/javascript" src='static/js/fullcalendar.min.js'></script>
+  <script type="text/javascript" src="static/js/taskfunc.js"></script>
+  <script type="text/javascript" src="static/js/jsonUI.js"></script>
   	
 </head>
 <body class = "body">
@@ -152,6 +155,7 @@
             });
             $('#st').click(function(){
               $('#selChild').attr("disabled","disabled");
+              $('#selChild').val([]);
               $('#duration').removeAttr("disabled");
             });
             </script>
@@ -222,7 +226,7 @@
 						<label for="allocTask">Allocated Tasks</label>
 						<select multiple class="form-control" id="allocTask"></select>
             		</div>
-            		<input class="btn btn-primary" name="submitTask" type="submit" value="Create Task">
+            		<input class="btn btn-primary" name="submitTask" type="submit" value="Create Resource">
             	</form>
 			</div>
        		<div class="modal-footer">
@@ -244,7 +248,7 @@
         	 	<h4 class="modal-title">Add Deliverables</h4>
       		</div>
       		<div class="modal-body" style="padding:40px 50px;">
-        		<form id = "deliverableForm" role="form" class = "form-horizontal" method="post" onsubmit="return addDeliverable();" >
+        		<form id = "deliverableForm" role="form" class = "form-horizontal" method="post" onsubmit="return createDeliverable();" >
           	  		<div class="form-group">
              			<label for="deliverableName"><span class="glyphicon glyphicon-tasks"></span> Deliverable Name</label>
               			<input type="text" class="form-control" name="deliverableName" placeholder="Enter deliverable name" required>
@@ -256,7 +260,7 @@
 							<option>Presentation</option>
 						</select>
             		</div>
-            		<input class="btn btn-primary" name="submitTask" type="submit" value="Add">
+            		<input class="btn btn-primary" name="submitTask" type="submit" value="Add Deliverable">
             	</form>
 			</div>
        		<div class="modal-footer">
@@ -273,7 +277,7 @@
       <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Create New Project</h4>
+            <h4 class="modal-title">Generate Schedule</h4>
           </div>
           <div class="modal-body" style="padding:40px 50px;">
             <form id = "generateSchForm" role="form" class ="form-horizontal" data-toggle = "validator" method="post" onsubmit="return createProject();">
@@ -281,7 +285,7 @@
                 <label for="startDate"><span class="glyphicon glyphicon-th"></span> Start Date</label>
                 <input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" name="date" readonly="readonly" required/>
               </div>
-              <input class="btn btn-primary" name="submitProject" type="submit" value="Create Project">
+              <input class="btn btn-primary" name="submitProject" type="submit" value="Generate">
             </form>
         </div>
         <div class="modal-footer">
@@ -293,33 +297,47 @@
     </div>
   </div>
 
-<div name="projectFrame">
   <h1 id="projectName">Project: </h1>
-  <div id="wrapper">
-    <div id="tasks">
+  <div class="wrapper1">
+    <div class="wrapper2">
+      <div id="task">
       <h2>Task</h2>
-    </div>  
+      </div>  
+      <div id="resources">
+        <h2>Resources</h2>
+        <ul class="inline">
+          <li><b>Resource</b></li>
+          <li><b>Price</b></li>
+        </ul>
+        <span id="resource" class="inline"></span>
+      </div>
+    </div>
+
     <div id="schedule"> 
       <h2>Schedule</h2>
-      <table>
-        <thead>
-          <th>Date</th>
-          <th>Task(s)</th>
-        </thead>
-        <tbody>
-
-        </tbody>
-      </table>
+      <div id='calendar'></div>
     </div>
   </div>
-  <div id="resources">
-    <h2>Resources</h2>
-    <ul class="inline">
-      <li><b>Resource</b></li>
-      <li><b>Price</b></li>
-    </ul>
-    <span id="resource" class="inline"></span>
-  </div>
-</div>
+
+<script>
+$('[data-dismiss=modal]').on('click', function (e) {
+  var $t = $(this),
+  target = $t[0].href || $t.data("target") || $t.parents('.modal') || [];
+  clearform(target)
+  
+})
+$('select[name*="task_list"]').change(function(){
+  $('select[name*="task_list"] option').attr('disabled',false);
+  $('select[name*="task_list"]').each(function(){
+      var $this = $(this);
+      $('select[name*="task_list"]').not($this).find('option').each(function(){
+         if($.inArray($(this).attr('value'),$this.val())>-1)
+             $(this).attr('disabled',true);
+      });
+   });
+});
+
+
+</script>
 </body>
 </html>

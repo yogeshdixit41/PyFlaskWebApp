@@ -1,1 +1,1 @@
-{"name": "My Project", "pred": [], "startTask": null, "deliverables": [{"type": "Presentation", "id": "10812", "name": "Del1"}], "children": [], "duration": 0, "succ": [], "finalTasks": [], "date": "11-12-2015", "id": "32210", "resources": [{"cost": "12", "type": "Labor", "id": "27513", "name": "Naman", "allocTasks": null}], "desc": "main_project"}
+{"name": "Your Project", "pred": [], "startTask": null, "deliverables": [], "children": [], "duration": 0, "succ": [], "finalTasks": [], "date": "12-17-2015", "id": "18980", "resources": [], "desc": "main_project"}

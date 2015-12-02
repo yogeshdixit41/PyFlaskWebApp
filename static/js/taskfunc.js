@@ -33,6 +33,13 @@ function createProject(){
   return false;
 }
 
+function importProject(){
+  if (!writeProject()){
+    $('#importProject').modal('hide');
+  }
+  return false;
+}
+
 
 function createTask(){
   if (!addTask()){
@@ -48,13 +55,6 @@ function createResource(){
   return false;
 }
 
-function createDeliverable(){
-  if (!addDeliverable()){
-    $('#addDeliverable').modal('hide');
-  }
-  return false;
-}
-
 
 function newProject() {
     $.getJSON('/project/newProject', {
@@ -66,18 +66,23 @@ function newProject() {
     return false;
 }
 
+function writeProject(){
+  //Call webservice to upload project
+  return false;
+}
+
 function addTask() {
     $.getJSON('/task/addTask', {
       taskName: $('input[name="taskName"]').val(),
       duration: $('input[name="duration"]').val(),
       optTaskType: $('input[name="optTaskType"]:checked').val(),
-      selChild: $('input[id="selChild"] option:selected').val(),
-      selPred: $('input[id="selPred"] option:selected').val(),
-      selSucc: $('input[id="selSucc"] option:selected').val(),
-      selRes: $('input[id="selRes"] option:selected').val(),
+      selChild: $('select[id="selChild"]').val(),
+      selPred: $('select[id="selPred"]').val(),
+      selSucc: $('select[id="selSucc"]').val(),
+      selRes: $('select[id="selRes"]').val(),
       taskDescription: $('textarea[name="taskDescription"]').val()
       }, function(data) {
-        location.reload();  
+        //location.reload();  
         console.log(data.children)
        
         //alert(data);
@@ -91,9 +96,9 @@ function addResource() {
       resourceName: $('input[name="resourceName"]').val(),
       dailycost: $('input[name="dailycost"]').val(),
       resourceType: $('select[id="resourceType"]').val(),
-      allocTask: $('select[name="allocTask"]').val()
+      allocTask: $('select[id="allocTask"]').val()
       }, function(data) {
-        location.reload();          
+        //location.reload();          
 
         console.log(data);
         //alert(data);

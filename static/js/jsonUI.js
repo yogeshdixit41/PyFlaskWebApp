@@ -22,10 +22,10 @@ $.getJSON('static/data/Project.json', function(data) {
 	//creates a tree call
 	if('children' in data){
 		$(tree(data.children)).appendTo("#task");
-		//updateSelectList($("#selChild"), data.children)
-    	//updateSelectList($("#selPred"), data.children)
-    	//updateSelectList($("#selSucc"), data.children)
-    	//updateSelectList($("#allocTask"), data.children)
+		updateSelectList($("#selChild"), data.children)
+    	updateSelectList($("#selPred"), data.children)
+    	updateSelectList($("#selSucc"), data.children)
+    	updateSelectList($("#allocTask"), data.children)
     
 	}
 	
@@ -37,7 +37,7 @@ function tree(data){
 	$.each(data, function(i, f) {
 		
 		if(typeof(f.children) != 'undefined' ){
-			str += "<li><span id='" + f.id + "'><img class='arrow' src='rArrow.jpg'/>" + f.name + "</span>";
+			str += "<li><span id='" + f.id + "'><img class='arrow' src='static/rArrow.jpg'/>" + f.name + "</span>";
 			str += tree(f.children) ;
 		}
 		else{
@@ -89,8 +89,8 @@ $(function(){
 
 		var origsrc = $(this).attr('src');
         var src = '';
-        if (origsrc == 'rArrow.jpg'){ src = 'dArrow.jpg';}
-        else {src = 'rArrow.jpg'};
+        if (origsrc == 'static/rArrow.jpg'){ src = 'static/dArrow.jpg';}
+        else {src = 'static/rArrow.jpg'};
         $(this).attr('src', src);
 	});
 });
@@ -117,8 +117,7 @@ $(document).ready(function() {
 
 function updateSelectList(list, data){
     $.each(data, function(i, f) {
-        var option = "<option value='"+f[i].id+"'>"+f[i].name+"</option>";
-        $option.appendTo(list)
+        var option = "<option value='"+f.id+"'>"+f.name+"</option>";
+        $(option).appendTo(list)
     })
-    list.html(option);
 }

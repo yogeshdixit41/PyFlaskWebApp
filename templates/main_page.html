@@ -43,11 +43,11 @@
       			<ul class = "dropdown-menu">
       				<li><a data-toggle="modal" href="#newProject">New Project</a></li>
       				<li role="separator" class="divider"></li>
-      				<li><a href="/projectfile/project.json" download>Export Project</a></li>
+      				<li><a href="static/data/Project.json" download>Export Project</a></li>
       				<li role="separator" class="divider"></li>
       				<li><a data-toggle="modal" href="#importProject">Import Project</a></li>
       				<li role="separator" class="divider"></li>
-      				<li><a href="/projectfile/schedule.csv" download>Export Schedule</a></li>
+      				<li><a href="static/data/schedule.csv" download>Export Schedule</a></li>
       			</ul>
       		</li>
     		  <li class="dropdown">
@@ -178,10 +178,10 @@
         	 	<h4 class="modal-title">Import Project</h4>
       		</div>
       		<div class="modal-body" style="padding:40px 50px;">
-        		<form id = "importForm" role="form" class = "form-horizontal" method="post">
+        		<form id = "importForm" role="form" class = "form-horizontal" method="post" onsubmit="return importProject();">
           	  		<div class="form-group">
           	  			<label for="inputfile">Select File</label>
-						<input id="inputfile" type="file" class="file file-loading" data-allowed-file-extensions='["json"]'>
+						<input name="inputfile" type="file" class="file file-loading" data-allowed-file-extensions='["json"]'>
             		</div>
             		<input class="btn btn-primary" name="submitTask" type="submit" value="Done">
             	</form>

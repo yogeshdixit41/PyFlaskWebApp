@@ -1,9 +1,10 @@
-import os
+import os, json
 from flask import Flask, jsonify, render_template, request
 import flask
 import Controller.ProjectController
 import Controller.ResourceController
 import Controller.TaskController
+import Controller.ScheduleController
 
 
 app = Flask(__name__)
@@ -72,6 +73,26 @@ def editTask():
 	parentId = request.args.get('parentId')
 	deliverables = request.args.getlist('deliverables')
 	return Controller.TaskController.editTask(id, name, duration, tsktype, children, pred, succ, resources, desc, parentId, deliverables)
+
+@app.route('/project/importProject')
+def importProject():
+	project = json.loads(request.args.get('project'))
+	return Controller.ProjectController.importProject(project)
+
+@app.route('/task/removeTask')
+def removeTask():
+	id = request.args.get('taskId')
+	return Controller.TaskController.removeTask(id)
+
+@app.route('/resource/removeResource')
+def removeResource():
+	id = request.args.get('resourceId')
+	return Controller.ResourceController.removeResource(id)
+
+@app.route('/schedule/generateSchedule')
+def generateSchedule():
+	start_date = request.args.get('date')
+	return Controller.ScheduleController.generateSchedule(start_date)
 
 
 if __name__ == '__main__':

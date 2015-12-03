@@ -75,14 +75,19 @@ function newProject() {
       pname: $('input[name="pName"]').val(),
       date: $('input[name="date"]').val()
       }, function(data) {
-        location.reload();  
+        location.reload();
+        $('#dateSchedule').val(data.date);  
       });
     return false;
 }
 
 function writeProject(){
-  //Call webservice to upload project
-  return false;
+  $.getJSON('/project/importProject',{
+    project: $('pre[class="file-preview-text"]').text()
+    }, function(data) {
+      location.reload();
+      });
+    return false; 
 }
 
 function addTask() {
@@ -97,7 +102,7 @@ function addTask() {
       taskDescription: $('textarea[name="taskDescription"]').val()
       }, function(data) {
         location.reload();  
-        console.log(data.children)
+        //console.log(data.children)
        
         //alert(data);
         });
@@ -117,7 +122,7 @@ function changeTask() {
       taskDescription: $('textarea[name="taskDescription"]').val()
       }, function(data) {
         location.reload();  
-        console.log(data.children)
+        //console.log(data.children)
        
         //alert(data);
         });
@@ -133,7 +138,7 @@ function addResource() {
       }, function(data) {
         location.reload();          
 
-        console.log(data);
+        //console.log(data);
         //alert(data);
         });
     return false;
@@ -149,13 +154,34 @@ function changeResource(){
       }, function(data) {
         location.reload();          
 
-        console.log(data);
+        //console.log(data);
         //alert(data);
         });
     return false;
 }
 
-
+function removeResource(){
+  $.getJSON('/resource/removeResource', {
+      resourceId: $('input[id="idHidden"]').val()
+      }, function(data) {
+        location.reload();          
+        //console.log(data);
+        //alert(data);
+        });
+    return false;
+}
+  
+function removeTask(){
+  $.getJSON('/task/removeTask', {
+      taskId: $('input[id="idHidden"]').val()
+      }, function(data) {
+        location.reload();          
+        //console.log(data);
+        //alert(data);
+        });
+    return false;
+}
+ 
 function addDeliverable() {
     $.getJSON('/deliverable/addDeliverable', {
       deliverableName: $('input[name="deliverableName"]').val(),
@@ -166,24 +192,11 @@ function addDeliverable() {
     return false;
 }
 
-
-$(function(){
-  $('.datepicker').datepicker({
-    format: 'mm-dd-yyyy'
-  });
-  $('#date').datepicker().on('changeDate', function(ev){
-    $('#date').val(ev.target.value);
-    });
-});
-
-
-function clearform(target){
-$(target)
-  .find("input[type=text],textarea,select")
-    .val('')
-    .end()
-  .find("input[type=checkbox], input[type=radio]")
-  .prop("checked", "")
-  .end();
+function generateSchedule(){
+  $.getJSON('/schedule/generateSchedule', {
+      date: $('#dateSchedule').val()
+      }, function(data) {
+        location.reload();
+        });
+  return false;
 }
-

@@ -53,23 +53,23 @@
     		  <li class="dropdown">
             <a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false">Project</a>
     				<ul class = "dropdown-menu">
-    					<li><a data-toggle="modal" href="#addTask">Add Task</a></li>
+    					<li><a data-toggle="modal" href="#addTask" onclick="return resetTaskForm()">Add Task</a></li>
     					<li role="separator" class="divider"></li>
-    					<li><a data-toggle="modal" href="#addResources">Add Resource</a></li>
+    					<li><a data-toggle="modal" href="#addResources" onclick="return resetResourceForm">Add Resource</a></li>
     					<li role="separator" class="divider"></li>
     					<li><a data-toggle="modal" href="#addDeliverable">Add Deliverables</a></li>
     					<li role="separator" class="divider"></li>
-    					<li><a href="#">Generate Schedule</a></li>
+    					<li><a data-toggle="modal" href="#generateSchedule">Generate Schedule</a></li>
     				</ul>
     		  </li>
     		  <li class="dropdown">
             <a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false">Edit</a>
     				<ul class = "dropdown-menu">
-    					<li><a id="editTask" data-toggle="modal" href="#addTask" class="disabled">Edit Task</a></li>
+    					<li><a id="editTask" data-toggle="modal" href="#addTask" class="inactiveLink">Edit Task</a></li>
     					<li role="separator" class="divider"></li>
-    					<li><a id="editResource" data-toggle="modal" href="#addResources" class="disabled">Edit Resources</a></li>
+    					<li><a id="editResource" data-toggle="modal" href="#addResources" class="inactiveLink">Edit Resources</a></li>
     					<li role="separator" class="divider"></li>
-    					<li><a href="#">Remove</a></li>
+    					<li><a id="remove" href="#">Remove</a></li>
     				</ul>
     		  </li>
     		</ul>
@@ -93,7 +93,7 @@
           		</div>
           		<div class="form-group has-feadback">
           			<label for="startDate"><span class="glyphicon glyphicon-th"></span> Start Date</label>
-             		<input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" name="date" readonly="readonly" required/>
+             		<input type="text" class="form-control datepicker" placeholder="dd-mm-yyyy" value="12-04-2015" id="date" name="date" readonly="readonly" required/>
               </div>
           		<input class="btn btn-primary" name="submitProject" type="submit" value="Create Project">
           	</form>
@@ -124,7 +124,7 @@
             <div class="form-group">
             	<label for="duration"><span class="glyphicon glyphicon-th"></span> Duration</label>
             	<input type="number" class="form-control" placeholder="Number of days" id = "duration" name="duration" title="Only numbers are allowed" required/>
-  						<label class="radio-inline"><input type="radio" name="optTaskType" id="st" value="SimpleTask">Simple Task</label>
+  						<label class="radio-inline"><input type="radio" name="optTaskType" checked="checked" id="st" value="SimpleTask">Simple Task</label>
   						<label class="radio-inline"><input type="radio" name="optTaskType" id ="ct" value="CompositeTask">Composite Task</label>
               <select multiple class="form-control" name ="task_list_1" id="selChild" disabled="disabled"></select>
   				  </div>
@@ -150,7 +150,7 @@
             <script>
             $('#ct').click(function(){
               $('#selChild').removeAttr("disabled");
-              $('#duration').attr("value", "");
+              $('#duration').val('');
               $('#duration').attr("disabled","disabled");
             });
             $('#st').click(function(){
@@ -181,9 +181,9 @@
         		<form id = "importForm" role="form" class = "form-horizontal" method="post" onsubmit="return importProject();">
           	  		<div class="form-group">
           	  			<label for="inputfile">Select File</label>
-						<input id="inputfile" name="inputfile" type="file" class="file file-loading" data-allowed-file-extensions='["json"]'>
+						<input id="inputfile" name="inputfile" type="file" class="file file-loading" data-allowed-file-extensions='["json"]' showUpload="false">
             		</div>
-            		<input class="btn btn-primary" name="submitTask" type="submit" value="Done">
+            		<input class="btn btn-primary" name="submitFile" type="submit" value="Done">
             	</form>
 			</div>
        		<div class="modal-footer">
@@ -260,7 +260,7 @@
 							<option>Presentation</option>
 						</select>
             		</div>
-            		<input class="btn btn-primary" name="submitTask" type="submit" value="Add Deliverable">
+            		<input class="btn btn-primary" name="submitDeliverable" type="submit" value="Add Deliverable">
             	</form>
 			</div>
        		<div class="modal-footer">
@@ -280,10 +280,10 @@
             <h4 class="modal-title">Generate Schedule</h4>
           </div>
           <div class="modal-body" style="padding:40px 50px;">
-            <form id = "generateSchForm" role="form" class ="form-horizontal" data-toggle = "validator" method="post" onsubmit="return createProject();">
+            <form id = "generateSchForm" role="form" class ="form-horizontal" data-toggle = "validator" method="post" onsubmit="return generateSchedule();">
               <div class="form-group has-feadback">
                 <label for="startDate"><span class="glyphicon glyphicon-th"></span> Start Date</label>
-                <input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" name="date" readonly="readonly" required/>
+                <input type="text" class="form-control datepicker" placeholder="mm-dd-yyyy" id="dateSchedule" name="dateSchedule"  readonly/>
               </div>
               <input class="btn btn-primary" name="submitProject" type="submit" value="Generate">
             </form>
@@ -332,12 +332,11 @@ $('select[name*="task_list"]').change(function(){
   $('select[name*="task_list"]').each(function(){
       var $this = $(this);
       $('select[name*="task_list"]').not($this).find('option').each(function(){
-         if($.inArray($(this).attr('value'),$this.val())>-1)
+         if($.inArray($(this).attr('value'),$this.val())>-1 || $(this).attr('value')==$('#idHidden').attr('value'))
              $(this).attr('disabled',true);
       });
    });
 });
-
 
 </script>
 </body>

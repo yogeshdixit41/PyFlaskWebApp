@@ -13,21 +13,19 @@ $.getJSON('static/data/Project.json', function(data) {
  //gets the resources
 	if('resources' in data){
 		$.each(data.resources, function(i, f) {
-		  var resourceRow = "<ul class='inline'><li id='" + f.id + "'>" + f.name + "</li><li id='" + f.id + "'>" + f.cost + "</li></ul>";
-		  $(resourceRow).appendTo("#resource");
+		  var resourceRow = "<ul class='inline'><li id='" + f.id + "'style='cursor:pointer'>" + f.name 
+		  + "</li><li id='" + f.id + "cost'>" + f.cost + "</li></ul>";
+		  $(resourceRow).appendTo("#resource");  
+		  updateSelectList($("#selRes"), f)   
 		});
-		updateSelectList($("#selRes"), data.resources)
 
 	}
 	//creates a tree call
 	if('children' in data){
 		$(tree(data.children)).appendTo("#task");
-		updateSelectList($("#selChild"), data.children)
-    	updateSelectList($("#selPred"), data.children)
-    	updateSelectList($("#selSucc"), data.children)
-    	updateSelectList($("#allocTask"), data.children)
-    
 	}
+
+	$('#dateSchedule').val(data.date);
 	
 });
 
@@ -35,13 +33,18 @@ $.getJSON('static/data/Project.json', function(data) {
 function tree(data){
 	var str = "<ul>";
 	$.each(data, function(i, f) {
+		updateSelectList($("#selChild"), f)
+    	updateSelectList($("#selPred"), f)
+    	updateSelectList($("#selSucc"), f)
+    	updateSelectList($("#allocTask"), f)
+	
 		
 		if(typeof(f.children) != 'undefined' ){
-			str += "<li><span id='" + f.id + "' style='cursor:pointer' ><img class='arrow' src='static/rArrow.jpg'/>" + f.name + "</span>";
+			str += "<li><span class='ttip' title='Description: " + f.desc + " " + getResources(f) + "'id='" + f.id + "' style='cursor:pointer' ><img class='arrow' src='static/rArrow.jpg'/>" + f.name + "</span>";
 			str += tree(f.children) ;
 		}
 		else{
-			str += "<li style='margin-left:20px'><span id='" + f.id + "' style='cursor:pointer'>" + f.name + "</span>";
+			str += "<li style='margin-left:20px'><span class='ttip' title='Description: " + f.desc + " " + getResources(f) + "'id='" + f.id + "' style='cursor:pointer'>" + f.name + "</span>";
 		}
 		str += "</li>";
 	})
@@ -56,8 +59,15 @@ function editT(data, id){
       		$('input[name="duration"]').val(f.duration);
    			$('textarea[name="taskDescription"]').val(f.desc);
   			$('input[id="idHidden"]').val(objectId);
+  			$('select[id="selPred"]').val(f.pred);
+  			$('select[id="selSucc"]').val(f.succ);
+  			$('select[id="selRes"]').val(f.resources);
 	   		$('form[id="taskForm"]').attr("onsubmit", "return editTask()");
    			$('input[name="submitTask"]').val("Edit Task");
+   			if (f.children != 'undefined') {
+   				$("#ct").attr('checked', 'checked');
+   				$('select[id="selChild"]').val(f.children);
+   			}
    			return false;
 		}
 		if(typeof(f.children) != 'undefined' ){
@@ -76,11 +86,13 @@ $(window).load(function() {
 		$("span").removeClass("highlight");
 		$("ul").removeClass("highlight");
 		$(this).addClass("highlight");
-		alert(objectId);
+		$("a#editTask").removeClass("inactiveLink");  
+		$("a#editResource").addClass("inactiveLink");
+		$("#remove").attr("onclick", "return removeTask();");
 		$.getJSON('static/data/Project.json', function(data) {
 			editT(data.children, objectId); 
     	});
-		console.log(task);
+		//console.log(task);
 		
     });
 });
@@ -93,6 +105,10 @@ $(window).load(function() {
 		$("span").removeClass("highlight");
 		$("ul").removeClass("highlight");
 		$(this).parent().addClass("highlight");
+		$("a#editTask").addClass("inactiveLink");
+		$("a#editResource").removeClass("inactiveLink");
+		$("#remove").attr("onclick", "return removeResource();");
+		$('input[id="idHidden"]').val(objectId);
 		$.getJSON('static/data/Project.json', function(data) {
 			var resources = data.resources.filter(function(val, index, array) {
     			return val.id === objectId; 
@@ -101,7 +117,7 @@ $(window).load(function() {
       		$('input[name="dailycost"]').val(resources[0].cost);
       		$('select[id="resourceType"]').val(resources[0].type);
       		$('select[id="allocTask"]').val(resources[0].allocTasks);
-      		$('input[id="idHidden"]').val(objectId);
+      		
       		$('form[id="resourceForm"]').attr("onsubmit", "return editResource()");
        		$('input[name="submitResource"]').val("Edit Resource");
 
@@ -109,11 +125,39 @@ $(window).load(function() {
 	});
 });
 
+// reset form if not Editing 
+function resetResourceForm(){
+	$('#resourceForm')[0].reset();
+	$('form[id="resourceForm"]').attr("onsubmit", "return createResource()");
+    $('input[name="submitResource"]').val("Create Resource");
+    $('#idHidden').val('');
+    return true;
+}
+
+function resetTaskForm(){
+	$('#taskForm')[0].reset();
+    $('form[id="taskForm"]').attr("onsubmit", "return createTask()");
+   	$('input[name="submitTask"]').val("Create Task");
+   	$('#idHidden').val('');
+   	$("#st").attr('checked', 'checked');
+   	return true;	
+}
+
+function getResources(task){
+	var resourceNames = ["Resouces: "];
+	$.each(task.resources, function (i, rId){
+		resourceNames.push($('#'+rId).text());
+	});
+	return resourceNames.join(' ');
+}
 //unselect if clicked outside of elements
 $(document).click(function (e) {
 	objectId = 0;
 	$("span").removeClass("highlight");
 	$("ul").removeClass("highlight");
+	$("a#editTask").addClass("inactiveLink");
+	$("a#editResource").addClass("inactiveLink");
+	$("#remove").removeAttr("onclick"); 	
 });
 
 //toggles the tree
@@ -152,8 +196,27 @@ $(document).ready(function() {
 });
 
 function updateSelectList(list, data){
-    $.each(data, function(i, f) {
-        var option = "<option value='"+f.id+"'>"+f.name+"</option>";
-        $(option).appendTo(list)
-    });
+    var option = "<option value='"+data.id+"'>"+data.name+"</option>";
+    $(option).appendTo(list)
 }
+
+$(function(){
+  $('.datepicker').datepicker({
+    format: 'mm-dd-yyyy',
+    autoclose: true
+  });
+
+
+  $('#date').datepicker().on('changeDate', function(ev){
+    $('#date').val(ev.target.value);
+    });
+});
+
+
+function clearform(target){
+$(target)
+  .find("input[type=text],textarea,select")
+    .val('')
+    .end()
+}
+

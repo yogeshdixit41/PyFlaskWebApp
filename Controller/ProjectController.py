@@ -57,3 +57,9 @@ def saveProject(projectId):
 	    
     return json.dumps(project_json, default=main_func.jdefault, indent = 2)
     
+def importProject(project):
+	with open(os.path.join(sys.path[0]+'/static/data', 'Project.json'), 'w') as outFile:
+		json.dump(project, outFile)
+  
+	return json.dumps(project, default=main_func.jdefault, indent = 2)
+

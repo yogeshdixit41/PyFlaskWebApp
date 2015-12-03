@@ -98,15 +98,15 @@ def editTask(id, name, duration, tsktype, children, pred, succ, resources, desc,
 
 	for task in taskList:
 		if task['id'] in pred and id not in task['succ']:
-			task[succ].append(id)
+			task['succ'].append(id)
 		elif task['id'] not in pred and id in task['succ']:
-			task[succ].remove(id) 
+			task['succ'].remove(id) 
 
 	for task in taskList:
 		if task['id'] in succ and id not in task['pred']:
-			task[pred].append(id)
+			task['pred'].append(id)
 		elif task['id'] not in succ and id in task['pred']:
-			task[pred].remove(id)
+			task['pred'].remove(id)
 
 	replaceTask(id,taskList,newTask_json)
 
@@ -139,3 +139,102 @@ def replaceTask(id,taskList,newTask):
 			children = task['children']
 			if children:
 				replaceTask(id,children,newTask)
+
+def removeTask(tid):
+
+    project_json = None
+    with open(os.path.join(sys.path[0]+'/static/data', 'Project.json'), 'r') as inFile:
+		project_json = json.load(inFile)
+					
+    predSuccList = None
+    removeAllocTasks(project_json, tid)
+    
+    predSuccList = getPredSucc(project_json, tid )
+    	
+    if(predSuccList != None):
+        successors = predSuccList['successors'] 
+        predecessors = predSuccList['predecessors']
+        for successor in successors:
+            setPred(project_json, successor,predecessors, tid)
+        for pred in predecessors:
+        	setSucc(project_json, pred, successors, tid)
+
+
+    with open(os.path.join(sys.path[0]+'/static/data', 'Project.json'), 'w') as outFile:
+        json.dump(project_json, outFile, indent = 2)
+
+    return json.dumps(project_json, default=main_func.jdefault, indent = 2)
+    
+
+#this function removes the task from the resource's allocated task list
+def removeAllocTasks(json_data, taskId):
+    
+    for resource in json_data['resources']:
+
+        if(resource['allocTasks'] != None):
+            if(taskId in resource['allocTasks']):
+                resource['allocTasks'].remove(taskId)
+                
+    
+
+#this function get the predecessors and successors of the task to be removed and also remove the task from project_json
+def getPredSucc(json_data, taskId):
+    predSuccList = None
+
+    for task in json_data['children']:
+        if(taskId == task['id']):
+        	predSuccList = {"predecessors" : [], "successors" : []}
+         	if(task['succ'] != None):
+        		predSuccList['successors'] = task['succ']
+         	if(task['pred'] != None):
+        		predSuccList['predecessors'] = task['pred']
+         	json_data['children'].remove(task)
+         	return predSuccList
+               
+        if task.has_key('children'):
+        	children = task['children']
+        	if children:
+        		predSuccList = getPredSucc(task,taskId)
+        		if predSuccList != None:
+        			return predSuccList
+        print taskId
+    return None
+                
+                
+
+#This function set the predecessors  of deleted task as the predecessors of the deleted task's successors
+def setPred(json_data, successor, predecessors, oldId):
+    found = None
+    if(json_data['id'] == successor):
+        
+        for predecessor in predecessors:
+            json_data['pred'].append(predecessor)
+            json_data['pred'].remove(oldId)
+        found = 1
+        return found
+        
+            	
+    else:
+        if(json_data.has_key('children')):
+            for child in json_data['children']:
+        	    found = setPred(child, successor, predecessors, oldId)
+        	    if(found != None):
+        	        return found
+
+def setSucc(json_data, pred, successors, oldId):
+    found = None
+    if(json_data['id'] == pred):
+        
+        for successor in successors:
+            json_data['succ'].append(successor)
+            json_data['succ'].remove(oldId)
+        found = 1
+        return found
+        
+            	
+    else:
+        if(json_data.has_key('children')):
+            for child in json_data['children']:
+        	    found = setSucc(child, pred, successors, oldId)
+        	    if(found != None):
+        	        return found

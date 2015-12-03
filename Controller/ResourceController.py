@@ -54,11 +54,7 @@ def editResource(rid,rname,rdailycost,rtype,rallocatedtasks):
         json.dump(project_json, outFile)
 
     return json.dumps(project_json, default=main_func.jdefault, indent = 2)
-	
-			
-        
-        
-
+	        
 
 def associateResource(taskList,resource,rallocatedtasks):
 	for task in taskList:
@@ -67,11 +63,32 @@ def associateResource(taskList,resource,rallocatedtasks):
 		elif task['id'] in rallocatedtasks and resource not in task['resources']:
 			task['resources'].append(resource.id)
 		elif task['id'] not in rallocatedtasks and resource in task['resources']:
-			trask['resources'].remove(resource.id)
+			task['resources'].remove(resource.id)
 
 		if task.has_key('children'):
 			children = task['children']
 			if children:
 				associateResource(children,resource,rallocatedtasks)
 
+def removeResource(id):
+    project_json = None
+    with open(os.path.join(sys.path[0]+'/static/data', 'Project.json'), 'r') as inFile:
+        project_json = json.load(inFile);
 
+    taskList = project_json['children']
+    project_json['resources'] = [resource for resource in project_json['resources'] if resource['id'] != id ]
+    removeResourceFromTasks(taskList,id)
+    project_json['children'] = taskList
+    with open(os.path.join(sys.path[0]+'/static/data', 'Project.json'), 'w') as outFile:
+        json.dump(project_json, outFile)
+
+    return json.dumps(project_json, default=main_func.jdefault, indent = 2)
+
+def removeResourceFromTasks(taskList,id):
+    for task in taskList:
+        if id in task['resources']:
+            task['resources'].remove(id)
+        if task.has_key('children'):
+            children = task['children']
+            if children:
+                removeResourceFromTasks(children,id)

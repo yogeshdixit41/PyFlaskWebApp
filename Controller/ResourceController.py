@@ -49,6 +49,10 @@ def editResource(rid,rname,rdailycost,rtype,rallocatedtasks):
     project_json['resources'].append(resource_json)
     associateResource(taskList, resource, rallocatedtasks )
     project_json['children'] = taskList
+
+    with open(os.path.join(sys.path[0]+'/static/data', 'Project.json'), 'w') as outFile:
+        json.dump(project_json, outFile)
+
     return json.dumps(project_json, default=main_func.jdefault, indent = 2)
 	
 			

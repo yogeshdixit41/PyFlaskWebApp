@@ -80,13 +80,13 @@ def editTask(id, name, duration, tsktype, children, pred, succ, resources, desc,
 	if old_task.has_key('children'):
 		if (tsktype == "CompositeTask"):
 			newTask_json['children'] = [task for task in old_task['children'] if task['id'] in children]
-			taskList.extend([task for task in old_task['children'] if task['id'] not in children])
+			taskList.append([task for task in old_task['children'] if task['id'] not in children])
 
 		else:
-			taskList.extend([task for task in old_task['children']])
+			taskList.append([task for task in old_task['children']])
 
 	if children:
-		newTask_json['children'].extend([task for task in taskList if task['id'] in children])
+		newTask_json['children'].append([task for task in taskList if task['id'] in children])
 		taskList = [task for task in taskList if task['id'] not in children]
 
 	resList = project_json['resources']

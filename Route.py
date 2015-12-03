@@ -25,9 +25,7 @@ def createResource():
 	rname = request.args.get('resourceName')
 	rdailycost = request.args.get('dailycost')
 	rtype = request.args.get('resourceType')
-	allocatedTasks = request.args.get('allocTask')
-	if allocatedTasks is not None :
-		allocatedTasks = request.args.get('allocTask').split(',')
+	allocatedTasks = request.args.getlist('allocTask[]')
 	return Controller.ResourceController.addResource(rname,rdailycost,rtype,allocatedTasks)
 
 @app.route('/deliverable/addDeliverable')
@@ -42,10 +40,10 @@ def createTask():
 	name = request.args.get('taskName')
 	duration = request.args.get('duration')
 	tsktype = request.args.get('optTaskType')
-	children = request.args.get('selChild')
-	pred = request.args.getlist('selPred')
-	succ = request.args.getlist('selSucc')
-	resources = request.args.getlist('selRes')
+	children = request.args.getlist('selChild[]')
+	pred = request.args.getlist('selPred[]')
+	succ = request.args.getlist('selSucc[]')
+	resources = request.args.getlist('selRes[]')
 	desc = request.args.get('taskDescription')
 	parentId = request.args.get('parentId')
 	deliverables = request.args.getlist('deliverables')
@@ -57,10 +55,23 @@ def editResource():
 	rname = request.args.get('resourceName')
 	rdailycost = request.args.get('dailycost')
 	rtype = request.args.get('resourceType')
-	allocatedTasks = request.args.get('allocTask')
-	if allocatedTasks is not None :
-		allocatedTasks = request.args.get('allocTask').split(',')
+	allocatedTasks = request.args.getlist('allocTask[]')
 	return Controller.ResourceController.editResource(rid,rname,rdailycost,rtype,allocatedTasks)
+
+@app.route('/task/editTask')
+def editTask():
+	id = request.args.get('taskId')
+	name = request.args.get('taskName')
+	duration = request.args.get('duration')
+	tsktype = request.args.get('optTaskType')
+	children = request.args.getlist('selChild[]')
+	pred = request.args.getlist('selPred[]')
+	succ = request.args.getlist('selSucc[]')
+	resources = request.args.getlist('selRes[]')
+	desc = request.args.get('taskDescription')
+	parentId = request.args.get('parentId')
+	deliverables = request.args.getlist('deliverables')
+	return Controller.TaskController.editTask(id, name, duration, tsktype, children, pred, succ, resources, desc, parentId, deliverables)
 
 
 if __name__ == '__main__':

@@ -65,9 +65,9 @@
     		  <li class="dropdown">
             <a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false">Edit</a>
     				<ul class = "dropdown-menu">
-    					<li class="disabled"><a data-toggle="modal" href="#addTask" >Edit Task</a></li>
+    					<li><a id="editTask" data-toggle="modal" href="#addTask" class="disabled">Edit Task</a></li>
     					<li role="separator" class="divider"></li>
-    					<li class="disabled"><a data-toggle="modal" href="#addResources">Edit Resources</a></li>
+    					<li><a id="editResource" data-toggle="modal" href="#addResources" class="disabled">Edit Resources</a></li>
     					<li role="separator" class="divider"></li>
     					<li><a href="#">Remove</a></li>
     				</ul>
@@ -123,7 +123,7 @@
             </div>
             <div class="form-group">
             	<label for="duration"><span class="glyphicon glyphicon-th"></span> Duration</label>
-            	<input type="number" class="form-control" placeholder="Number of days" name="duration" title="Only numbers are allowed" required/>
+            	<input type="number" class="form-control" placeholder="Number of days" id = "duration" name="duration" title="Only numbers are allowed" required/>
   						<label class="radio-inline"><input type="radio" name="optTaskType" id="st" value="SimpleTask">Simple Task</label>
   						<label class="radio-inline"><input type="radio" name="optTaskType" id ="ct" value="CompositeTask">Composite Task</label>
               <select multiple class="form-control" name ="task_list_1" id="selChild" disabled="disabled"></select>
@@ -181,7 +181,7 @@
         		<form id = "importForm" role="form" class = "form-horizontal" method="post" onsubmit="return importProject();">
           	  		<div class="form-group">
           	  			<label for="inputfile">Select File</label>
-						<input name="inputfile" type="file" class="file file-loading" data-allowed-file-extensions='["json"]'>
+						<input id="inputfile" name="inputfile" type="file" class="file file-loading" data-allowed-file-extensions='["json"]'>
             		</div>
             		<input class="btn btn-primary" name="submitTask" type="submit" value="Done">
             	</form>
@@ -202,13 +202,13 @@
         <div class="modal-content">
       	    <div class="modal-header">
        	 	    <button type="button" class="close" data-dismiss="modal">&times;</button>
-        	 	<h4 class="modal-title">Create New Resource</h4>
+        	 	<h4 class="modal-title">Create/Edit Resource</h4>
       		</div>
       		<div class="modal-body" style="padding:40px 50px;">
         		<form id = "resourceForm" role="form" class = "form-horizontal" method="post" onsubmit="return createResource();">
-          	  		<div class="form-group">
+          	  	<div class="form-group">
              			<label for="resourceName"><span class="glyphicon glyphicon-tasks"></span> Resource Name</label>
-              			<input type="text" class="form-control" name="resourceName" placeholder="Enter resource name" required>
+              		<input type="text" class="form-control" name="resourceName" placeholder="Enter resource name" required>
             		</div>
             		<div class="form-group">
             			<label for="dailycost"><span class="glyphicon glyphicon-usd"></span> Daily Cost</label>
@@ -226,7 +226,7 @@
 						<label for="allocTask">Allocated Tasks</label>
 						<select multiple class="form-control" id="allocTask"></select>
             		</div>
-            		<input class="btn btn-primary" name="submitTask" type="submit" value="Create Resource">
+            		<input class="btn btn-primary" name="submitResource" type="submit" value="Create Resource">
             	</form>
 			</div>
        		<div class="modal-footer">
@@ -298,6 +298,7 @@
   </div>
 
   <h1 id="projectName">Project: </h1>
+  <input type="hidden" id="idHidden" name="idHidden">
   <div class="wrapper1">
     <div class="wrapper2">
       <div id="task">

@@ -40,7 +40,6 @@ function importProject(){
   return false;
 }
 
-
 function createTask(){
   if (!addTask()){
     $('#addTask').modal('hide');
@@ -48,9 +47,24 @@ function createTask(){
   return false;
 }
 
+function editTask(){
+  if (!changeTask()){
+    $('#editTask').modal('hide');
+  }
+  return false;
+}
+
+
 function createResource(){
   if (!addResource()){
     $('#addResources').modal('hide');
+  }
+  return false;
+}
+
+function editResource(){
+  if(!changeResource()){
+    $('#addResource').modal('hide');
   }
   return false;
 }
@@ -82,7 +96,7 @@ function addTask() {
       selRes: $('select[id="selRes"]').val(),
       taskDescription: $('textarea[name="taskDescription"]').val()
       }, function(data) {
-        //location.reload();  
+        location.reload();  
         console.log(data.children)
        
         //alert(data);
@@ -90,15 +104,50 @@ function addTask() {
     return false;
 }
 
+function changeTask() {
+    $.getJSON('/task/editTask', {
+      taskId: $('input[id="idHidden"]').val(),
+      taskName: $('input[name="taskName"]').val(),
+      duration: $('input[name="duration"]').val(),
+      optTaskType: $('input[name="optTaskType"]:checked').val(),
+      selChild: $('select[id="selChild"]').val(),
+      selPred: $('select[id="selPred"]').val(),
+      selSucc: $('select[id="selSucc"]').val(),
+      selRes: $('select[id="selRes"]').val(),
+      taskDescription: $('textarea[name="taskDescription"]').val()
+      }, function(data) {
+        location.reload();  
+        console.log(data.children)
+       
+        //alert(data);
+        });
+    return false;
+}
 
 function addResource() {
     $.getJSON('/resource/addResource', {
       resourceName: $('input[name="resourceName"]').val(),
       dailycost: $('input[name="dailycost"]').val(),
       resourceType: $('select[id="resourceType"]').val(),
-      allocTask: $('select[name="allocTask"]').val()
+      allocTask: $('select[id="allocTask"]').val()
       }, function(data) {
-        //location.reload();          
+        location.reload();          
+
+        console.log(data);
+        //alert(data);
+        });
+    return false;
+}
+
+function changeResource(){
+  $.getJSON('/resource/editResource', {
+      resourceId: $('input[id="idHidden"]').val(),
+      resourceName: $('input[name="resourceName"]').val(),
+      dailycost: $('input[name="dailycost"]').val(),
+      resourceType: $('select[id="resourceType"]').val(),
+      allocTask: $('select[id="allocTask"]').val()
+      }, function(data) {
+        location.reload();          
 
         console.log(data);
         //alert(data);

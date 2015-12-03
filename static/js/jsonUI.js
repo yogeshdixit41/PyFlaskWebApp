@@ -16,7 +16,7 @@ $.getJSON('static/data/Project.json', function(data) {
 		  var resourceRow = "<ul class='inline'><li id='" + f.id + "'>" + f.name + "</li><li id='" + f.id + "'>" + f.cost + "</li></ul>";
 		  $(resourceRow).appendTo("#resource");
 		});
-		//updateSelectList($("#selRes"), data.resources)
+		updateSelectList($("#selRes"), data.resources)
 
 	}
 	//creates a tree call
@@ -37,39 +37,75 @@ function tree(data){
 	$.each(data, function(i, f) {
 		
 		if(typeof(f.children) != 'undefined' ){
-			str += "<li><span id='" + f.id + "'><img class='arrow' src='static/rArrow.jpg'/>" + f.name + "</span>";
+			str += "<li><span id='" + f.id + "' style='cursor:pointer' ><img class='arrow' src='static/rArrow.jpg'/>" + f.name + "</span>";
 			str += tree(f.children) ;
 		}
 		else{
-			str += "<li style='margin-left:20px'><span id='" + f.id + "'>" + f.name + "</span>";
+			str += "<li style='margin-left:20px'><span id='" + f.id + "' style='cursor:pointer'>" + f.name + "</span>";
 		}
 		str += "</li>";
 	})
 	str += "</ul>";
 	return str;
 }
+
+function editT(data, id){
+	$.each(data, function(i, f) {
+		if (id == f.id) {
+			$('input[name="taskName"]').val(f.name);
+      		$('input[name="duration"]').val(f.duration);
+   			$('textarea[name="taskDescription"]').val(f.desc);
+  			$('input[id="idHidden"]').val(objectId);
+	   		$('form[id="taskForm"]').attr("onsubmit", "return editTask()");
+   			$('input[name="submitTask"]').val("Edit Task");
+   			return false;
+		}
+		if(typeof(f.children) != 'undefined' ){
+			editT(f.children, id);
+		}
+	});
+}
+
+
 //selects the li span of a task
 var objectId = 0;
-$(function() {
+$(window).load(function() {
 	$("#task li span").on("click", function(e) {
 		e.stopPropagation();
 		objectId = this.id;
-		alert(objectId);
 		$("span").removeClass("highlight");
 		$("ul").removeClass("highlight");
 		$(this).addClass("highlight");
-	});
+		alert(objectId);
+		$.getJSON('static/data/Project.json', function(data) {
+			editT(data.children, objectId); 
+    	});
+		console.log(task);
+		
+    });
 });
 
 //selects the ul of a resource
-$(function() {
+$(window).load(function() {
 	$("#resource li").on("click", function(e) {
 		e.stopPropagation();
 		objectId = this.id;
-		alert(objectId);
 		$("span").removeClass("highlight");
 		$("ul").removeClass("highlight");
 		$(this).parent().addClass("highlight");
+		$.getJSON('static/data/Project.json', function(data) {
+			var resources = data.resources.filter(function(val, index, array) {
+    			return val.id === objectId; 
+    		});
+   			$('input[name="resourceName"]').val(resources[0].name);
+      		$('input[name="dailycost"]').val(resources[0].cost);
+      		$('select[id="resourceType"]').val(resources[0].type);
+      		$('select[id="allocTask"]').val(resources[0].allocTasks);
+      		$('input[id="idHidden"]').val(objectId);
+      		$('form[id="resourceForm"]').attr("onsubmit", "return editResource()");
+       		$('input[name="submitResource"]').val("Edit Resource");
+
+      	});
 	});
 });
 
@@ -119,5 +155,5 @@ function updateSelectList(list, data){
     $.each(data, function(i, f) {
         var option = "<option value='"+f.id+"'>"+f.name+"</option>";
         $(option).appendTo(list)
-    })
+    });
 }

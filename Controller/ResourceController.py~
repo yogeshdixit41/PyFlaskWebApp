@@ -57,17 +57,17 @@ def editResource(rid,rname,rdailycost,rtype,rallocatedtasks):
 
 
 def associateResource(taskList,resource,rallocatedtasks):
-    for task in taskList:
-        if task['id'] in rallocatedtasks and resource in task['resources']:
+	for task in taskList:
+		if task['id'] in rallocatedtasks and resource in task['resources']:
 			pass
 		elif task['id'] in rallocatedtasks and resource not in task['resources']:
 			task['resources'].append(resource.id)
 		elif task['id'] not in rallocatedtasks and resource in task['resources']:
 			trask['resources'].remove(resource.id)
 
-        if task.has_key('children'):
-            children = task['children']
-            if children:
-                associateResource(children,resource,rallocatedtasks)
+		if task.has_key('children'):
+			children = task['children']
+			if children:
+				associateResource(children,resource,rallocatedtasks)
 
 

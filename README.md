@@ -1,12 +1,15 @@
 Introduction
 
-We developed a web application which Project Managers can use to manage 
+This is a academic project developed under the guidance of Dr. Jon Pearce in class CS-251 (Object Oriented Analysis) .
 
-projects, task, resources and schedule online. The application has been developed 
+This is a Project management application (web application) which Project Managers can use to manage 
 
-using the Python Flask framework, and it follows Model View Controller structure.
+projects, task, resources and generate schedule online. The application has been developed 
 
-Project Structure
+using the Python Flask framework and uses RESTful API's. Application is deployed on Heroku server.
+---------------------------------------------------------------------------------------------------
+
+Project Structure:
 
 EntityModel
 
@@ -61,9 +64,3 @@ actual file names from the outside world.
 Static
 
 This folder contains all the JavaScript files that front-end is using. 
-
-Project.json
-
-We are serializing the project to json file. This file resides in 
-
-pcp_ooa_final/static/data.

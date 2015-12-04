@@ -7,7 +7,7 @@ This is a Project management application (web application) which Project Manager
 projects, task, resources and generate schedule online. The application has been developed 
 
 using the Python Flask framework and uses RESTful API's. Application is deployed on Heroku server.
----------------------------------------------------------------------------------------------------
+
 
 Project Structure:
 
@@ -63,4 +63,4 @@ actual file names from the outside world.
 
 Static
 
-This folder contains all the JavaScript files that front-end is using. 
+This folder contains all the JavaScript files that front-end is using.

@@ -1,6 +1,7 @@
 Introduction
 
-This is a academic project developed under the guidance of Dr. Jon Pearce in class CS-251 (Object Oriented Analysis) .
+This is a academic project developed under the guidance of Dr. Jon Pearce in class CS-251 (Object Oriented Analysis).
+Authors: Anumeha Shah, Khushbu Mohta, Naman Bagga, Nathan Kong, Yogesh Dixit. 
 
 This is a Project management application (web application) which Project Managers can use to manage 
 
